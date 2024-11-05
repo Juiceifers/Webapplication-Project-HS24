@@ -1,0 +1,161 @@
+/* styles.css */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #e8f5f5;
+    color: #333;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding-right: 12px;
+    padding-left: 12px;
+    padding-bottom: 6px;
+    padding-top: 6px;
+    
+}
+
+.header-content {
+    text-align: left;
+    gap: 10px;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.left-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo img {
+    height: 50px;
+    margin-right: 7px;
+    margin-top: 5px;
+}
+
+#slogan {
+    font-size: x-small;
+    color: lightgray;
+    font-style: italic;
+    text-align: left;
+    margin-left: 4px;
+}
+#authors {
+    font-size: x-small;
+    color: lightgray;
+    font-style: italic;
+    text-align: right;
+}
+
+#link {
+    color: lightblue;
+}
+
+.container {
+    display: flex;
+}
+
+.sidebar {
+    background-color: #204a53;
+    color: white;
+    width: 250px;
+    height: 100vh;
+    padding: 20px;
+}
+
+.history {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: teal;
+    border-radius: 25px;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.user-avatar {
+    width: 50px;
+    height: 50px;
+    background-color: gray;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.previous-maps h2 {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.previous-maps ul {
+    list-style-type: none;
+}
+
+.previous-maps li {
+    display: flex;
+    align-items: center;
+    margin: 15px 0;
+}
+
+.color-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.dot-gray { background-color: #ccc; }
+.dot-yellow { background-color: #f0c040; }
+.dot-pink { background-color: #ff4081; }
+.dot-green { background-color: #4caf50; }
+
+main {
+    flex: 1;
+    padding: 40px;
+}
+
+h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.upload-box {
+    background-color: #cfe2e2;
+    border: 2px dashed #777;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.upload-box p {
+    margin: 10px 0;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+}
+
+.actions .btn {
+    background-color: #338a7f;
+    color: white;
+    flex: 1;
+}
