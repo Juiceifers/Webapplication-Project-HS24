@@ -34,7 +34,7 @@ def chunk_text(text, max_tokens=1024):
     return chunks
 
 # Function to summarize text using Hugging Face
-def summarize_text_with_huggingface(text, model_name="google/pegasus-xsum"):
+def summarize_text_with_huggingface(text, model_name="Falconsai/text_summarization"):
     summarizer = pipeline("summarization", model=model_name, device=-1)
     
     input_length = len(text.split())  # Calculate the number of tokens/words in the input
