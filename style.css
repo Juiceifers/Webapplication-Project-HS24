@@ -88,13 +88,6 @@ header {
     font-style: italic;
 }
 
-.user-avatar {
-    width: 50px;
-    height: 50px;
-    background-color: gray;
-    border-radius: 50%;
-    margin-right: 10px;
-}
 
 .previous-maps h2 {
     font-size: 18px;
@@ -111,17 +104,6 @@ header {
     margin: 15px 0;
 }
 
-.color-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    margin-right: 10px;
-}
-
-.dot-gray { background-color: #ccc; }
-.dot-yellow { background-color: #f0c040; }
-.dot-pink { background-color: #ff4081; }
-.dot-green { background-color: #4caf50; }
 
 main {
     flex: 1;
@@ -130,19 +112,25 @@ main {
 
 h2 {
     font-size: 24px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .upload-box {
     background-color: #cfe2e2;
     border: 2px dashed #777;
     padding: 20px;
+    padding-bottom: 10px;
     text-align: center;
     margin-bottom: 20px;
 }
 
 .upload-box p {
     margin: 10px 0;
+}
+
+#smallText {
+    color: lightslategray;
+    font-size: small;
 }
 
 button {
@@ -161,4 +149,33 @@ button {
     background-color: #338a7f;
     color: white;
     flex: 1;
+}
+
+
+.previous-maps li {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.previous-maps .map-link {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.previous-maps .map-link:hover {
+    text-decoration: underline;
+}
+
+#mapNameForm {
+    margin-bottom: 15px;
+    justify-content: space-between;
+}
+
+#mapName {
+    background-color: lightgoldenrodyellow;
+    border-radius: 10px;
+    padding: 7px;
 }

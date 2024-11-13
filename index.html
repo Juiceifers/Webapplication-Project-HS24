@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mind Map Application</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="shortcut icon" type="image/png" href="C:\Users\babus\OneDrive\Documents\uni uzh\HS24\WebApp\team-7\Logos\favicon_marioStar.png" <!-- favicon -->
 </head>
 <body>
 
@@ -13,14 +12,13 @@
         <div class="header-content">
             <div class="left-content">
                 <div class="logo">
-                    <img src="C:\Users\babus\OneDrive\Documents\uni uzh\HS24\WebApp\team-7\Logos\DEV7_v1_light.png" alt="Logo">
+                    <img src="path_to_logo.png" alt="Logo">
                 </div>
-                <div>
-                    <h1 id="title">MapMyLecture</h1>
-                </div>
-                <p id="slogan">Convert your lectures into simple mindmaps <br> with just a few clicks hihi</p>
+                <h1 id="title">MapMyLecture</h1>
+                <p id="slogan">Convert your lectures into simple mindmaps <br> with just a few clicks!</p>
             </div>
-            <p id="authors">Created by <br>
+            <p id="authors">
+                Created by <br>
                 <a id="link" href="https://www.linkedin.com/in/ishana-rana/">Ishana Rana</a><br>
                 <a id="link" href="https://www.linkedin.com/in/mert-erol1/">Mert Erol</a><br>
                 <a id="link" href="https://github.com/peypod">Kasper Shaun Powell</a>
@@ -31,17 +29,13 @@
     <div class="container">
         <aside class="sidebar">
             <div class="disclaimer">
-                <p>Be aware that this model might provide inaccurate results! Always double check!!<br> We take no accountability!</p>
+                <p>Be aware that this model might provide inaccurate results! Always double check!!<br> We take no accountability lmao</p>
             </div>
             <aside class="history">
                 <div class="previous-maps">
                     <h2>Previous Maps</h2>
-                    <ul>
-                        <li><span class="color-dot dot-gray"></span> Statistical Modelling</li>
-                        <li><span class="color-dot dot-yellow"></span> FOC2</li>
-                        <li><span class="color-dot dot-pink"></span> Webapplications</li>
-                        <li><span class="color-dot dot-green"></span> Machine Learning</li>
-                        <li><span class="color-dot dot-gray"></span> NeuroScience</li>
+                    <ul id="previousMapsList">
+                        <!-- New map names will be added here dynamically -->
                     </ul>
                 </div>
             </aside>
@@ -49,17 +43,25 @@
 
         <main>
             <h2>Create A New Map!</h2>
+            
+            <!-- Form to input the map name -->
+            <form id="mapNameForm">
+                <label for="mapName">Name of this map:</label>
+                <input type="text" id="mapName" name="mapName" placeholder="required" required autofocus>
+            </form>
+
             <div class="upload-box">
-                <p>Upload file(s)</p>
-                <button>Choose a file</button>
-                <p>Supported file formats are .pdf, .docx, .pptx</p>
+                <p id="subhead" style="font-size: large; margin-bottom: 20px;">Upload file(s)</p>
+                <input type="file" id="uploadFile" multiple>
+                <p style="font-size: small; margin-top: 20px;">Supported file formats are .pdf, .docx, .pptx</p>
             </div>
+            
             <div class="actions">
-                <button class="btn">Do the magic!</button>
+                <button class="btn" id="processBtn">Do the magic!</button>
             </div>
         </main>
     </div>
 
-
+    <script src="script.js"></script>
 </body>
 </html>
