@@ -79,10 +79,13 @@ header {
     border-radius: 25px;
 }
 
-.user-profile {
-    display: flex;
-    align-items: center;
+.disclaimer {
+    font-size: x-small;
     margin-bottom: 20px;
+    margin-top: 10px;
+    text-align: center;
+    color: lightgray;
+    font-style: italic;
 }
 
 .user-avatar {
