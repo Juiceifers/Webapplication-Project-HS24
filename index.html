@@ -12,7 +12,7 @@
         <div class="header-content">
             <div class="left-content">
                 <div class="logo">
-                    <img src="path_to_logo.png" alt="Logo">
+                    <img src="team-7\Logos\DEV7_v1_light.png" alt="Logo">
                 </div>
                 <h1 id="title">MapMyLecture</h1>
                 <p id="slogan">Convert your lectures into simple mindmaps <br> with just a few clicks!</p>
@@ -40,17 +40,17 @@
                 </div>
             </aside>
         </aside>
-
+    
         <main>
             <h2>Create A New Map!</h2>
             
-            <!-- Form to input the map name -->
+            <!-- Form to input the map name (this will be hidden) -->
             <form id="mapNameForm">
                 <label for="mapName">Name of this map:</label>
                 <input type="text" id="mapName" name="mapName" placeholder="required" required autofocus>
             </form>
-
-            <div class="upload-box">
+    
+            <div class="upload-box" id="uploadBox">
                 <p id="subhead" style="font-size: large; margin-bottom: 20px;">Upload file(s)</p>
                 <input type="file" id="uploadFile" multiple>
                 <p style="font-size: small; margin-top: 20px;">Supported file formats are .pdf, .docx, .pptx</p>
@@ -59,8 +59,15 @@
             <div class="actions">
                 <button class="btn" id="processBtn">Do the magic!</button>
             </div>
+    
+            <!-- Progress Bar -->
+            <div id="progress-container" style="display:none;">
+                <progress id="progressBar" value="0" max="100"></progress>
+                <p id="progressText" style="text-align: center;">Processing... 0%</p>
+            </div>
         </main>
     </div>
+    
 
     <script src="script.js"></script>
 </body>

@@ -12,7 +12,7 @@ body {
 }
 
 header {
-    background-color: #333;
+    background-color: #492055;
     color: white;
     padding-right: 12px;
     padding-left: 12px;
@@ -178,4 +178,46 @@ button {
     background-color: lightgoldenrodyellow;
     border-radius: 10px;
     padding: 7px;
+}
+
+
+/* Centering the progress bar and text */
+#progress-container {
+    display: flex;
+    flex-direction: column;  /* Stack the progress bar and text vertically */
+    justify-content: center;  /* Center them horizontally */
+    align-items: center;      /* Center them vertically */
+    height: 200px;            /* Adjust the container height for centering */
+    width: 100%;              /* Ensure the container takes full width */
+}
+
+/* Styling the progress bar itself */
+progress {
+    width: 60%;               /* Set the width of the progress bar */
+    height: 30px;             /* Set the height of the progress bar */
+    border-radius: 10px;      /* Rounded corners for the progress bar */
+    background-color: #f3f3f3;/* Light background for the progress bar */
+}
+
+/* Customizing the color of the progress bar value */
+progress::-webkit-progress-bar {
+    background-color: #f3f3f3; /* Background color of the bar */
+    border-radius: 10px;        /* Rounded corners for the progress bar */
+}
+
+progress::-webkit-progress-value {
+    background-color: #a05cb4; /* Violet color for the progress value */
+    border-radius: 10px;        /* Rounded corners for the progress value */
+}
+
+progress::-moz-progress-bar {
+    background-color: #a05cb4; /* Violet color for Firefox */
+    border-radius: 10px;
+}
+
+/* Styling the progress text */
+#progressText {
+    font-size: 18px;
+    margin-top: 10px;
+    color: #333;               /* Dark text color */
 }
