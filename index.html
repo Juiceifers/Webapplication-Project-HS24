@@ -12,7 +12,7 @@
         <div class="header-content">
             <div class="left-content">
                 <div class="logo">
-                    <img src="team-7\Logos\DEV7_v1_light.png" alt="Logo">
+                    <img src="C:\Users\babus\OneDrive\Documents\uni uzh\HS24\WebApp\team-7\graphics\DEV7_v1_light.png" alt="Logo">
                 </div>
                 <h1 id="title">MapMyLecture</h1>
                 <p id="slogan">Convert your lectures into simple mindmaps <br> with just a few clicks!</p>
@@ -51,9 +51,10 @@
             </form>
     
             <div class="upload-box" id="uploadBox">
+                <img id="uploadIcon" src="C:\Users\babus\OneDrive\Documents\uni uzh\HS24\WebApp\team-7\graphics\uploadIcon.png" alt="Uploading icon">
                 <p id="subhead" style="font-size: large; margin-bottom: 20px;">Upload file(s)</p>
                 <input type="file" id="uploadFile" multiple>
-                <p style="font-size: small; margin-top: 20px;">Supported file formats are .pdf, .docx, .pptx</p>
+                <p style="font-size: small; margin-top: 20px; color: grey;">Supported file formats are .pdf, .docx, .pptx</p>
             </div>
             
             <div class="actions">
@@ -61,10 +62,12 @@
             </div>
     
             <!-- Progress Bar -->
-            <div id="progress-container" style="display:none;">
+            <div id="progress-container" style="display:flex;">
                 <progress id="progressBar" value="0" max="100"></progress>
                 <p id="progressText" style="text-align: center;">Processing... 0%</p>
             </div>
+            <!-- The results will be inserted here dynamically -->
+            <div id="results-container"></div>
         </main>
     </div>
     

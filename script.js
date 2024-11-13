@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const mapNameForm = document.getElementById("mapNameForm"); // The map name form to hide
     const processButton = document.getElementById("processBtn"); // The "Do the magic!" button
     const createMapHeader = document.querySelector("main h2"); // "Create a new map" heading
+    const resultsContainer = document.getElementById('results-container');
 
     // When the "Do the magic!" button is clicked
     processBtn.addEventListener("click", function () {
@@ -62,8 +63,9 @@ document.addEventListener("DOMContentLoaded", function () {
             } else {
                 clearInterval(interval); // Stop the progress after reaching 100%
                 progressText.textContent = 'Processing complete!';
-                // Call the function to display the results after processing
-                displayResults(); // You can replace this with actual backend response later
+                // Hide progress bar and show the results
+                progressContainer.style.display = 'none';
+                displayResults(); // Call the function to display the results
             }
         }, 50); // Update progress every 50ms (this results in 100 updates over 5 seconds)
 
@@ -100,6 +102,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Function to display the results after processing
     function displayResults() {
+
+        // create the text summary div
         const textSummary = document.createElement('div');
         textSummary.classList.add('result-box');
         textSummary.innerHTML = `
@@ -110,7 +114,8 @@ document.addEventListener("DOMContentLoaded", function () {
             <button onclick="openTextSummary()">Open in new tab</button>
             <button onclick="exportToPDF()">Export to .pdf</button>
         `;
-        document.body.appendChild(textSummary);
+        resultsContainer.appendChild(textSummary);
+
 
         const mindMap = document.createElement('div');
         mindMap.classList.add('result-box');
@@ -122,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <button onclick="openMindMap()">Open in new tab</button>
             <button onclick="exportToSVG()">Export to .svg</button>
         `;
-        document.body.appendChild(mindMap);
+        resultsContainer.appendChild(mindMap);
     }
 
     // Dummy functions for export and open actions
