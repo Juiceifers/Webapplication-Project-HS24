@@ -57,7 +57,7 @@ header {
 }
 
 #link {
-    color: lightblue;
+    color: #fed1eb;
 }
 
 .container {
@@ -88,12 +88,15 @@ header {
     font-style: italic;
 }
 
+.previous-maps{
+    position: relative;
+}
 
 .previous-maps h2 {
     font-size: 18px;
     margin-bottom: 20px;
+    padding-top: 7px;
 }
-
 .previous-maps ul {
     list-style-type: none;
 }
@@ -103,6 +106,30 @@ header {
     align-items: center;
     margin: 15px 0;
 }
+
+/* Styling for the Plus button */
+.plus-btn {
+    background-color: #af4f92;   /* Background color */
+    color: white;
+    border: none;
+    border-radius: 10px;          /* Circular button */
+    width: 40px;                 /* Size of the button */
+    height: 35px;
+    font-size: 24px;             /* Plus sign size */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top:0px;
+    right: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.plus-btn:hover {
+    background-color: #9e2078;   /* Darker shade on hover */
+}
+
 
 
 main {
@@ -114,6 +141,8 @@ h2 {
     font-size: 24px;
     margin-bottom: 10px;
 }
+
+
 
 .upload-box {
     background-color: #cfe2e2;

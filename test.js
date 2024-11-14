@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
+    const processBtn = document.getElementById("processBtn");
     const mapNameInput = document.getElementById("mapName");
     const previousMapsList = document.getElementById("previousMapsList");
     const uploadFileInput = document.getElementById('uploadFile');
@@ -7,7 +8,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const progressContainer = document.getElementById('progress-container');
     const uploadBox = document.getElementById("uploadBox"); // The upload box to hide
     const mapNameForm = document.getElementById("mapNameForm"); // The map name form to hide
-    const processButton = document.getElementById("processBtn"); // The "Do the magic!" button
     const createMapHeader = document.querySelector("main h2"); // "Create a new map" heading
     const resultsContainer = document.getElementById('results-container');
     const plusButton = document.getElementById("plusButton");
@@ -27,6 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
     plusButton.addEventListener("click", function () {
         resetToUploadForm();
     });
+    
 
     // When the "Do the magic!" button is clicked
     processBtn.addEventListener("click", function () {
@@ -163,3 +164,5 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log('Exporting to SVG...');
     }
 });
+
+
