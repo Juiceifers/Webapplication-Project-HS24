@@ -121,6 +121,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // create the text summary div
         const textSummary = document.createElement('div');
+        mapNameInput.classList.add('result-box');
         textSummary.classList.add('result-box');
         textSummary.innerHTML = `
             <h2>Text Summary</h2>

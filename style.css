@@ -115,7 +115,7 @@ header {
     border-radius: 10px;          /* Circular button */
     width: 40px;                 /* Size of the button */
     height: 35px;
-    font-size: 24px;             /* Plus sign size */
+    font-size: 30px;             /* Plus sign size */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -128,6 +128,31 @@ header {
 
 .plus-btn:hover {
     background-color: #9e2078;   /* Darker shade on hover */
+}
+
+/* Style the tooltip */
+.plus-btn .tooltip {
+    visibility: hidden; /* Hidden by default */
+    background-color: #322f2f; /* Black background */
+    color: #cf8bc3; /* White text */
+    text-align: center;
+    padding: 5px 8px;
+    border-radius: 6px;
+    font-size: 9px;
+    position: absolute;
+    top: 110%; /* Position below the button */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    white-space: nowrap; /* Prevent text wrapping */
+    opacity: 0; /* Fully transparent by default */
+    transition: opacity 0.3s ease; /* Smooth fade-in */
+}
+
+/* Show the tooltip on hover */
+.plus-btn:hover .tooltip {
+    visibility: visible; /* Make visible */
+    opacity: 1; /* Fade in */
 }
 
 
@@ -282,8 +307,8 @@ progress::-moz-progress-bar {
 /* Result container for the text summary and mind map */
 .results-container {
     display: flex;                 /* Use grid layout */
-    grid-template-columns: repeat(2, 1fr); /* Create 2 equal columns */
-    gap: 20px;                     /* Space between columns */
+    flex-direction: column;
+    align-content: center;
     margin-top: 50px;              /* Space from the top of the page */
     padding: 20px;
     background-color: #a05cb4;
