@@ -90,6 +90,7 @@ header {
 
 .previous-maps{
     position: relative;
+    word-wrap: break-word;
 }
 
 .previous-maps h2 {
@@ -134,7 +135,7 @@ header {
 .plus-btn .tooltip {
     visibility: hidden; /* Hidden by default */
     background-color: #322f2f; /* Black background */
-    color: #cf8bc3; /* White text */
+    color: #dc96cf; /* White text */
     text-align: center;
     padding: 5px 8px;
     border-radius: 6px;
@@ -355,14 +356,18 @@ progress::-moz-progress-bar {
     background-color: #2e7568;   /* Darker shade when hovered */
 }
 
-/* Ensure responsiveness */
-@media (max-width: 768px) {
-    .results-container {
-        grid-template-columns: 1fr;  /* Stack the boxes vertically on smaller screens */
-        gap: 15px;                   /* Reduce the gap between result boxes */
-    }
 
-    .result-box {
-        width: 90%; /* Allow the results to take more width on small screens */
-    }
+#map-name-heading {
+    text-align: center;
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.uploaded-files-info {
+    padding: 10px;
+    font-size: 14px;
+    color: #555;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
 }

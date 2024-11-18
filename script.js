@@ -5,142 +5,162 @@ document.addEventListener("DOMContentLoaded", function () {
     const progressBar = document.getElementById('progressBar');
     const progressText = document.getElementById('progressText');
     const progressContainer = document.getElementById('progress-container');
-    const uploadBox = document.getElementById("uploadBox"); // The upload box to hide
-    const mapNameForm = document.getElementById("mapNameForm"); // The map name form to hide
-    const processButton = document.getElementById("processBtn"); // The "Do the magic!" button
-    const createMapHeader = document.querySelector("main h2"); // "Create a new map" heading
+    const uploadBox = document.getElementById("uploadBox");
+    const mapNameForm = document.getElementById("mapNameForm");
+    const processButton = document.getElementById("processBtn");
+    const createMapHeader = document.querySelector("main h2");
     const resultsContainer = document.getElementById('results-container');
     const plusButton = document.getElementById("plusButton");
+    const mapNameHeading = document.createElement("h2"); // Element to display map name
+    mapNameHeading.id = "mapNameHeading";
+    mapNameHeading.style.display = "none"; // Hidden initially
+    resultsContainer.prepend(mapNameHeading);
 
-    // Store previous sessions
-    let sessions = JSON.parse(localStorage.getItem("sessions")) || [];
+    // Clear previous sessions when the page is loaded
+    localStorage.removeItem("sessions"); // Clear any stored sessions
+    let sessions = []; // Start fresh with an empty session array
+
     // Function to reset to the upload form
     function resetToUploadForm() {
         createMapHeader.style.display = 'block';
         uploadBox.style.display = 'block';
         mapNameForm.style.display = 'block';
-        processBtn.style.display = 'block';
+        processButton.style.display = 'block';
         resultsContainer.innerHTML = '';
         progressContainer.style.display = 'none';
     }
+
     // When the pink plus button is clicked
     plusButton.addEventListener("click", function () {
         resetToUploadForm();
     });
 
     // When the "Do the magic!" button is clicked
-    processBtn.addEventListener("click", function () {
+    processButton.addEventListener("click", function () {
         const mapName = mapNameInput.value.trim();
         if (mapName === "") {
             alert("Please enter a map name!");
             return;
         }
 
-        // Hide the "Create a new map" heading, map name input form, upload box, and "Do the magic!" button
-        createMapHeader.style.display = 'none';  // Hide the "Create a New Map!" heading
-        uploadBox.style.display = 'none';       // Hide the file upload section
-        mapNameForm.style.display = 'none';     // Hide the map name input form
-        processButton.style.display = 'none';   // Hide the "Do the magic!" button
+        // Retrieve the uploaded files
+        const files = Array.from(uploadFileInput.files);
+        const fileNames = files.map(file => file.name);
 
-        // Add the map name to the sidebar
-        addMapToSidebar(mapName);
-
-        // Show progress bar
-        progressContainer.style.display = 'block';
-        progressBar.value = 0;
-        progressText.textContent = "Processing... 0%";
-
-        // Clear the input field after adding it to the sidebar
-        mapNameInput.value = "";
-
-        // Store the map name for future use (in backend or local storage)
-        storeMapName(mapName);
-
-        // Upload the files (this part can be integrated with backend later)
-        const files = uploadFileInput.files;
         if (files.length === 0) {
             alert('Please upload a file first!');
             return;
         }
 
-        // Create FormData and append the files
-        const formData = new FormData();
-        for (let i = 0; i < files.length; i++) {
-            formData.append('file' + i, files[i]);
-        }
+        // Create a session object for this map
+        const session = {
+            name: mapName,
+            files: fileNames, // Store the uploaded file names
+            results: {
+                textSummary: {
+                    size: "65Mb",
+                    pages: 4,
+                    percentage: 80,
+                },
+                mindMap: {
+                    size: "30Mb",
+                    nodes: 23,
+                    percentage: 30,
+                }
+            }
+        };
 
-        // Start a dummy progress update (5 seconds duration for demo)
+        // Save the session
+        sessions.push(session);
+
+        // Add the map name to the sidebar
+        addMapToSidebar(session);
+
+        // Hide form and show progress bar
+        createMapHeader.style.display = 'none';
+        uploadBox.style.display = 'none';
+        mapNameForm.style.display = 'none';
+        processButton.style.display = 'none';
+        progressContainer.style.display = 'block';
+        progressBar.value = 0;
+        progressText.textContent = "Processing... 0%";
+
+        // Clear input
+        mapNameInput.value = "";
+
+        // Simulate progress
         let progress = 0;
         const interval = setInterval(function () {
             if (progress < 100) {
-                progress += 2; // Increase progress by 2% every 50ms
+                progress += 2;
                 progressBar.value = progress;
                 progressText.textContent = `Processing... ${progress}%`;
             } else {
-                clearInterval(interval); // Stop the progress after reaching 100%
+                clearInterval(interval);
                 progressText.textContent = 'Processing complete!';
-                // Hide progress bar and show the results
                 progressContainer.style.display = 'none';
-                displayResults(); // Call the function to display the results
+                displayResults(session); // Pass the session object
             }
-        }, 50); // Update progress every 50ms (this results in 100 updates over 5 seconds)
-
+        }, 50);
     });
 
     // Function to add the map name to the sidebar list dynamically
-    function addMapToSidebar(mapName) {
+    function addMapToSidebar(session) {
         const li = document.createElement("li");
         li.innerHTML = `
             <span class="color-dot dot-gray"></span> 
-            <a href="#" class="map-link">${mapName}</a>
+            <a href="#" class="map-link">${session.name}</a>
         `;
         previousMapsList.appendChild(li);
 
-        // Add event listener for the new map name to revisit
+        // Add event listener to display this session's results
         li.querySelector(".map-link").addEventListener("click", function () {
-            alert(`You clicked on map: ${mapName}`);
-            // Handle revisiting the map result logic here (e.g., load saved map results from local storage or server)
+            displayResults(session);
         });
     }
 
-    // Optional: Store the map names in LocalStorage for persistence across page refreshes
-    function storeMapName(mapName) {
-        let storedMaps = JSON.parse(localStorage.getItem("maps")) || [];
-        storedMaps.push(mapName);
-        localStorage.setItem("maps", JSON.stringify(storedMaps));
-    }
-
-    // Optional: Retrieve stored maps on page load
-    document.addEventListener("DOMContentLoaded", function () {
-        const storedMaps = JSON.parse(localStorage.getItem("maps")) || [];
-        storedMaps.forEach(mapName => addMapToSidebar(mapName));
-    });
-
     // Function to display the results after processing
-    function displayResults() {
+    function displayResults(session) {
+        // Display the map name heading
+        mapNameHeading.textContent = `${session.name}`;
+        mapNameHeading.style.color = "#103D4A";
+        mapNameHeading.style.display = "block";
 
-        // create the text summary div
+        // Clear previous results
+        resultsContainer.innerHTML = '';
+        resultsContainer.prepend(mapNameHeading); // Ensure heading stays on top
+
+        // Create the uploaded files list section
+        const uploadedFilesSection = document.createElement('div');
+        uploadedFilesSection.classList.add('uploaded-files-info');
+        const fileNames = session.files.join(', ');
+
+        uploadedFilesSection.innerHTML = `
+            <p><strong>Files used:</strong> ${fileNames || 'No files uploaded'}</p>
+        `;
+        resultsContainer.appendChild(uploadedFilesSection);
+
+        // Create the text summary div
         const textSummary = document.createElement('div');
-        mapNameInput.classList.add('result-box');
         textSummary.classList.add('result-box');
         textSummary.innerHTML = `
             <h2>Text Summary</h2>
-            <p>Document size: 65Mb</p>
-            <p>Number of pages: 4</p>
-            <p>% info represented: 80%</p>
+            <p>Document size: ${session.results.textSummary.size}</p>
+            <p>Number of pages: ${session.results.textSummary.pages}</p>
+            <p>% info represented: ${session.results.textSummary.percentage}%</p>
             <button onclick="openTextSummary()">Open in new tab</button>
             <button onclick="exportToPDF()">Export to .pdf</button>
         `;
         resultsContainer.appendChild(textSummary);
 
-
+        // Create the mind map div
         const mindMap = document.createElement('div');
         mindMap.classList.add('result-box');
         mindMap.innerHTML = `
             <h2>Mind Map</h2>
-            <p>Document size: 30Mb</p>
-            <p>Number of nodes: 23</p>
-            <p>% info represented: 30%</p>
+            <p>Document size: ${session.results.mindMap.size}</p>
+            <p>Number of nodes: ${session.results.mindMap.nodes}</p>
+            <p>% info represented: ${session.results.mindMap.percentage}%</p>
             <button onclick="openMindMap()">Open in new tab</button>
             <button onclick="exportToSVG()">Export to .svg</button>
         `;
