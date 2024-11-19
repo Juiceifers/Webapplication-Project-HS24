@@ -1,33 +1,42 @@
 document.addEventListener("DOMContentLoaded", function () {
     const mapNameInput = document.getElementById("mapName");
     const previousMapsList = document.getElementById("previousMapsList");
-    const uploadFileInput = document.getElementById('uploadFile');
-    const progressBar = document.getElementById('progressBar');
-    const progressText = document.getElementById('progressText');
-    const progressContainer = document.getElementById('progress-container');
+    const uploadFileInput = document.getElementById("uploadFile");
+    const progressBar = document.getElementById("progressBar");
+    const progressText = document.getElementById("progressText");
+    const progressContainer = document.getElementById("progress-container");
     const uploadBox = document.getElementById("uploadBox");
     const mapNameForm = document.getElementById("mapNameForm");
     const processButton = document.getElementById("processBtn");
     const createMapHeader = document.querySelector("main h2");
-    const resultsContainer = document.getElementById('results-container');
+    const resultsContainer = document.getElementById("results-container");
     const plusButton = document.getElementById("plusButton");
-    const mapNameHeading = document.createElement("h2"); // Element to display map name
+    const mapNameHeading = document.createElement("h2");
     mapNameHeading.id = "mapNameHeading";
-    mapNameHeading.style.display = "none"; // Hidden initially
+    mapNameHeading.style.display = "none";
     resultsContainer.prepend(mapNameHeading);
 
     // Clear previous sessions when the page is loaded
-    localStorage.removeItem("sessions"); // Clear any stored sessions
-    let sessions = []; // Start fresh with an empty session array
+    localStorage.removeItem("sessions");
+    let sessions = [];
 
-    // Function to reset to the upload form
+    // Function to reset the upload form
     function resetToUploadForm() {
-        createMapHeader.style.display = 'block';
-        uploadBox.style.display = 'block';
-        mapNameForm.style.display = 'block';
-        processButton.style.display = 'block';
-        resultsContainer.innerHTML = '';
-        progressContainer.style.display = 'none';
+        createMapHeader.style.display = "block";
+        uploadBox.style.display = "block";
+        mapNameForm.style.display = "block";
+        processButton.style.display = "block";
+        resultsContainer.innerHTML = "";
+        progressContainer.style.display = "none";
+        clearActiveHighlight(); // Clear any active highlights
+    }
+
+    // Clear active highlights
+    function clearActiveHighlight() {
+        const activeItem = previousMapsList.querySelector(".highlight");
+        if (activeItem) {
+            activeItem.classList.remove("highlight");
+        }
     }
 
     // When the pink plus button is clicked
@@ -43,52 +52,36 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        // Retrieve the uploaded files
         const files = Array.from(uploadFileInput.files);
         const fileNames = files.map(file => file.name);
 
         if (files.length === 0) {
-            alert('Please upload a file first!');
+            alert("Please upload a file first!");
             return;
         }
 
-        // Create a session object for this map
         const session = {
             name: mapName,
-            files: fileNames, // Store the uploaded file names
+            files: fileNames,
             results: {
-                textSummary: {
-                    size: "65Mb",
-                    pages: 4,
-                    percentage: 80,
-                },
-                mindMap: {
-                    size: "30Mb",
-                    nodes: 23,
-                    percentage: 30,
-                }
-            }
+                textSummary: { size: "65Mb", pages: 4, percentage: 80 },
+                mindMap: { size: "30Mb", nodes: 23, percentage: 30 },
+            },
         };
 
-        // Save the session
         sessions.push(session);
-
-        // Add the map name to the sidebar
         addMapToSidebar(session);
 
-        // Hide form and show progress bar
-        createMapHeader.style.display = 'none';
-        uploadBox.style.display = 'none';
-        mapNameForm.style.display = 'none';
-        processButton.style.display = 'none';
-        progressContainer.style.display = 'block';
+        createMapHeader.style.display = "none";
+        uploadBox.style.display = "none";
+        mapNameForm.style.display = "none";
+        processButton.style.display = "none";
+        progressContainer.style.display = "block";
         progressBar.value = 0;
         progressText.textContent = "Processing... 0%";
 
-        // Clear input
         mapNameInput.value = "";
 
-        // Simulate progress
         let progress = 0;
         const interval = setInterval(function () {
             if (progress < 100) {
@@ -97,9 +90,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 progressText.textContent = `Processing... ${progress}%`;
             } else {
                 clearInterval(interval);
-                progressText.textContent = 'Processing complete!';
-                progressContainer.style.display = 'none';
-                displayResults(session); // Pass the session object
+                progressText.textContent = "Processing complete!";
+                progressContainer.style.display = "none";
+                displayResults(session);
             }
         }, 50);
     });
@@ -107,6 +100,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Function to add the map name to the sidebar list dynamically
     function addMapToSidebar(session) {
         const li = document.createElement("li");
+        li.classList.add("map-item"); // Add a class for easier identification
         li.innerHTML = `
             <span class="color-dot dot-gray"></span> 
             <a href="#" class="map-link">${session.name}</a>
@@ -115,8 +109,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Add event listener to display this session's results
         li.querySelector(".map-link").addEventListener("click", function () {
+            highlightActiveMap(li); // Highlight this map in the sidebar
+            createMapHeader.style.display = "none";
+            uploadBox.style.display = "none";
+            mapNameForm.style.display = "none";
+            processButton.style.display = "none";
+            progressContainer.style.display = "none";
             displayResults(session);
         });
+
+        // Automatically highlight newly created map
+        highlightActiveMap(li);
+    }
+
+    // Function to highlight the active map in the sidebar
+    function highlightActiveMap(activeItem) {
+        // Clear any existing highlights
+        clearActiveHighlight();
+
+        // Highlight the current map
+        activeItem.classList.add("highlight");
     }
 
     // Function to display the results after processing
@@ -131,8 +143,8 @@ document.addEventListener("DOMContentLoaded", function () {
         resultsContainer.prepend(mapNameHeading); // Ensure heading stays on top
 
         // Create the uploaded files list section
-        const uploadedFilesSection = document.createElement('div');
-        uploadedFilesSection.classList.add('uploaded-files-info');
+        const uploadedFilesSection = document.createElement("div");
+        uploadedFilesSection.classList.add("uploaded-files-info");
         const fileNames = session.files.join(', ');
 
         uploadedFilesSection.innerHTML = `
@@ -141,8 +153,8 @@ document.addEventListener("DOMContentLoaded", function () {
         resultsContainer.appendChild(uploadedFilesSection);
 
         // Create the text summary div
-        const textSummary = document.createElement('div');
-        textSummary.classList.add('result-box');
+        const textSummary = document.createElement("div");
+        textSummary.classList.add("result-box");
         textSummary.innerHTML = `
             <h2>Text Summary</h2>
             <p>Document size: ${session.results.textSummary.size}</p>
@@ -154,8 +166,8 @@ document.addEventListener("DOMContentLoaded", function () {
         resultsContainer.appendChild(textSummary);
 
         // Create the mind map div
-        const mindMap = document.createElement('div');
-        mindMap.classList.add('result-box');
+        const mindMap = document.createElement("div");
+        mindMap.classList.add("result-box");
         mindMap.innerHTML = `
             <h2>Mind Map</h2>
             <p>Document size: ${session.results.mindMap.size}</p>
@@ -169,18 +181,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Dummy functions for export and open actions
     function openTextSummary() {
-        window.open('text-summary-url', '_blank');
+        window.open("text-summary-url", "_blank");
     }
 
     function exportToPDF() {
-        console.log('Exporting to PDF...');
+        console.log("Exporting to PDF...");
     }
 
     function openMindMap() {
-        window.open('mind-map-url', '_blank');
+        window.open("mind-map-url", "_blank");
     }
 
     function exportToSVG() {
-        console.log('Exporting to SVG...');
+        console.log("Exporting to SVG...");
     }
 });
