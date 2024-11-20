@@ -276,33 +276,39 @@ button {
 #progress-container {
     display: flex;
     flex-direction: column;  /* Stack the progress bar and text vertically */
-    height: 200px;            /* Adjust the container height for centering */
-    width: 100%;              /* Ensure the container takes full width */
+    height: 200px;            
+    width: 100%;
+    align-content: center;
+    padding: 10%;   
 }
 
-/* Styling the progress bar itself */
+/* the progress bar itself */
 progress {
-    width: 60%;               /* Set the width of the progress bar */
-    height: 30px;             /* Set the height of the progress bar */
-    border-radius: 10px;      /* Rounded corners for the progress bar */
-    background-color: #CBC19F;/* Light background for the progress bar */
-    justify-content: center;
+    width: 100%;               
+    height: 40px;             
+    border-radius: 15px;
+    border: 4px solid #8E6D1E;
+    background: transparent;
+    padding: 3px;
+          
 }
 
 /* Customizing the color of the progress bar value */
 progress::-webkit-progress-bar {
     background-color: transparent; /* Background color of the bar */
     border-radius: 10px;        /* Rounded corners for the progress bar */
+    border: 6px rgb(68, 20, 20);
 }
 
 progress::-webkit-progress-value {
-    background-color: #8E6D1E; 
+    background-image: linear-gradient(to right, #fc8ccc , #a97e19); 
     border-radius: 10px;        /* Rounded corners for the progress value */
 }
 
 progress::-moz-progress-bar {
     background-color: linear-gradient(to right, #ff7b7b, #ff5d8f, #6a7fff); /* Violet color for the progress value */
     border-radius: 10px;        /* Rounded corners for the progress value */
+    border: 6px rgb(68, 20, 20);
 }
 
 /* Styling the progress text */
