@@ -61,7 +61,7 @@ def summarize_pdf(PATH):
 
     final_summary = '\n\n'.join(summarized_chunks)
 
-    with open("summary_summarizer.txt", "w") as f:
+    with open("data/summary_summarizer.txt", "w") as f:
         f.write(final_summary)
 
 def main():

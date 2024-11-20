@@ -60,6 +60,10 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
+        let formData = new FormData();
+     
+        formData.append("file", files[0]);
+        fetch('http://127.0.0.1:5000/upload', {method: "POST", body: formData});
         const session = {
             name: mapName,
             files: fileNames,
