@@ -12,7 +12,7 @@ body {
 }
 
 header {
-    background-color: #333;
+    background-color: #292727;
     color: white;
     padding-right: 12px;
     padding-left: 12px;
@@ -57,7 +57,7 @@ header {
 }
 
 #link {
-    color: lightblue;
+    color: #fed1eb;
 }
 
 .container {
@@ -67,7 +67,7 @@ header {
 .sidebar {
     background-color: #204a53;
     color: white;
-    width: 250px;
+    width: 300px;
     height: 100vh;
     padding: 20px;
 }
@@ -79,25 +79,25 @@ header {
     border-radius: 25px;
 }
 
-.user-profile {
-    display: flex;
-    align-items: center;
+.disclaimer {
+    font-size: x-small;
     margin-bottom: 20px;
+    margin-top: 10px;
+    text-align: center;
+    color: lightgray;
+    font-style: italic;
 }
 
-.user-avatar {
-    width: 50px;
-    height: 50px;
-    background-color: gray;
-    border-radius: 50%;
-    margin-right: 10px;
+.previous-maps{
+    position: relative;
+    word-wrap: break-word;
 }
 
 .previous-maps h2 {
     font-size: 18px;
     margin-bottom: 20px;
+    padding-top: 7px;
 }
-
 .previous-maps ul {
     list-style-type: none;
 }
@@ -108,17 +108,55 @@ header {
     margin: 15px 0;
 }
 
-.color-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    margin-right: 10px;
+/* Styling for the Plus button */
+.plus-btn {
+    background-color: #af4f92;   /* Background color */
+    color: white;
+    border: none;
+    border-radius: 10px;          /* Circular button */
+    width: 40px;                 /* Size of the button */
+    height: 35px;
+    font-size: 30px;             /* Plus sign size */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top:0px;
+    right: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-.dot-gray { background-color: #ccc; }
-.dot-yellow { background-color: #f0c040; }
-.dot-pink { background-color: #ff4081; }
-.dot-green { background-color: #4caf50; }
+.plus-btn:hover {
+    background-color: #9e2078;   /* Darker shade on hover */
+}
+
+/* Style the tooltip */
+.plus-btn .tooltip {
+    visibility: hidden; /* Hidden by default */
+    background-color: #322f2f; /* Black background */
+    color: #dc96cf; /* White text */
+    text-align: center;
+    padding: 5px 8px;
+    border-radius: 6px;
+    font-size: 9px;
+    position: absolute;
+    top: 110%; /* Position below the button */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    white-space: nowrap; /* Prevent text wrapping */
+    opacity: 0; /* Fully transparent by default */
+    transition: opacity 0.3s ease; /* Smooth fade-in */
+}
+
+/* Show the tooltip on hover */
+.plus-btn:hover .tooltip {
+    visibility: visible; /* Make visible */
+    opacity: 1; /* Fade in */
+}
+
+
 
 main {
     flex: 1;
@@ -127,19 +165,35 @@ main {
 
 h2 {
     font-size: 24px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
+
+
 
 .upload-box {
     background-color: #cfe2e2;
     border: 2px dashed #777;
+    border-radius: 20px;
     padding: 20px;
+    padding-bottom: 10px;
     text-align: center;
     margin-bottom: 20px;
 }
 
 .upload-box p {
     margin: 10px 0;
+}
+
+#smallText {
+    color: lightslategray;
+    font-size: small;
+}
+
+#uploadIcon {
+    width: 55px;
+    height: auto;
+    margin: 0;
+    padding: 0;
 }
 
 button {
@@ -152,10 +206,190 @@ button {
 .actions {
     display: flex;
     gap: 10px;
+    justify-content: center;
+    align-items: center;
 }
 
 .actions .btn {
+    padding: 10px 20px;
     background-color: #338a7f;
     color: white;
-    flex: 1;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.btn:hover {
+    background-color: #2e7568;   /* Darker shade when hovered */
+}
+
+
+.previous-maps li {
+    display: flex;
+    align-items: center;
+    padding-left: 5px;
+    margin: 10px 0;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.previous-maps li:hover{
+    background-color:  rgb(252, 140, 204, 0.55);
+}
+
+.previous-maps .map-link {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 5px;
+    width: 100%;
+}
+
+.previous-maps .map-link:hover {
+    text-decoration: underline;
+    background-color: transparent;
+}
+
+/* Highlight the active map in the sidebar */
+.previous-maps .highlight {
+    background-color: rgba(196, 105, 156, 0.55); /* Same as hover color */
+    border-radius: 5px; /* Optional for consistent styling */
+    color: white; /* Maintain text visibility */
+}
+
+
+#mapNameForm {
+    margin-bottom: 15px;
+    justify-content: space-between;
+}
+
+#mapName {
+    background-color: lightgoldenrodyellow;
+    border-radius: 10px;
+    padding: 7px;
+}
+
+
+/* Centering the progress bar and text */
+#progress-container {
+    display: flex;
+    flex-direction: column;  /* Stack the progress bar and text vertically */
+    height: 200px;            
+    width: 100%;
+    align-content: center;
+    padding: 10%;   
+}
+
+/* the progress bar itself */
+progress {
+    width: 100%;               
+    height: 40px;             
+    border-radius: 15px;
+    border: 4px solid #8E6D1E;
+    background: transparent;
+    padding: 3px;
+          
+}
+
+/* Customizing the color of the progress bar value */
+progress::-webkit-progress-bar {
+    background-color: transparent; /* Background color of the bar */
+    border-radius: 10px;        /* Rounded corners for the progress bar */
+    border: 6px rgb(68, 20, 20);
+}
+
+progress::-webkit-progress-value {
+    background-image: linear-gradient(to right, #fc8ccc , #a97e19); 
+    border-radius: 10px;        /* Rounded corners for the progress value */
+}
+
+progress::-moz-progress-bar {
+    background-color: linear-gradient(to right, #ff7b7b, #ff5d8f, #6a7fff); /* Violet color for the progress value */
+    border-radius: 10px;        /* Rounded corners for the progress value */
+    border: 6px rgb(68, 20, 20);
+}
+
+/* Styling the progress text */
+#progressText {
+    font-size: 18px;
+    margin-top: 10px;
+    color: #333;
+}
+
+
+/* Result container for the text summary and mind map */
+.results-container {
+    display: flex;                 /* Use flexbox layout */
+    flex-direction: row;           /* Ensure items are laid out in a row */
+    justify-content: space-between; /* Add spacing between the boxes */
+    align-items: flex-start;       /* Align items at the top */
+    flex-wrap: wrap;             /* Prevent wrapping */
+    gap: 20px;                     /* Add spacing between boxes */
+    padding: 20px;
+}
+
+
+/* Individual result boxes */
+.result-box {
+    background-color:#dfd6b9;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;             
+    box-shadow: 0px 8px 32px rgba(0, 0, 0, 0.3); /* Optional box shadow */
+    text-align: center;            /* Center the text inside */
+    max-width: 45%;
+}
+
+/* Title inside result box */
+.result-box h2 {
+    margin-bottom: 15px;
+    font-size: 24px;
+    color: #333;
+}
+
+/* Button styling inside result box */
+.result-box button {
+    padding: 10px 20px;
+    background-color: #338a7f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.result-box button:hover {
+    background-color: #2e7568;   /* Darker shade when hovered */
+}
+
+/* Responsive design: Stack boxes on smaller screens */
+@media (max-width: 768px) {
+    .results-container {
+        flex-direction: column;    /* Stack items vertically */
+
+    }
+
+    .result-box {
+        width: 100%;               /* Full width on smaller screens */
+    }
+}
+
+#map-name-heading {
+    text-align: center;
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.uploaded-files-info {
+    padding: 10px;
+    font-size: 14px;
+    color: #555;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
 }
