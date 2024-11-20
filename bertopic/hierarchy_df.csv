@@ -1,0 +1,22 @@
+,Parent_ID,Parent_Name,Topics,Child_Left_ID,Child_Left_Name,Child_Right_ID,Child_Right_Name,Distance
+20,42,neurophysiol_koniocellular_retinal_neurosci_parvocellular,"[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21]",24,neurophysiol_neurosci_physiol_neurol_extrastriate,41,koniocellular_parvocellular_retinal_extrastriate_4cα,1.3732788648267187
+19,41,koniocellular_parvocellular_retinal_extrastriate_4cα,"[0, 1, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21]",40,koniocellular_retinal_parvocellular_interblobs_extrastriate,22,mstl_neuroscience_mstd_nature_v6,1.3335402010280564
+18,40,koniocellular_retinal_parvocellular_interblobs_extrastriate,"[0, 1, 4, 5, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 19, 20, 21]",29,2000_1999_2001_1996_2004,39,koniocellular_parvocellular_interblobs_retinal_extrastriate,1.1766386519652339
+17,39,koniocellular_parvocellular_interblobs_retinal_extrastriate,"[0, 1, 5, 7, 8, 9, 10, 11, 13, 15, 17, 19, 20, 21]",38,koniocellular_interblobs_parvocellular_retinal_extrastriate,26,rights_publishers_reserved_published_limited,1.1436674414116608
+16,38,koniocellular_interblobs_parvocellular_retinal_extrastriate,"[0, 1, 5, 7, 8, 9, 10, 11, 13, 15, 20, 21]",31,retinal_koniocellular_parvocellular_interblobs_extrastriate,37,4a_4b_4cα_3b_7a,1.1061799499773335
+15,37,4a_4b_4cα_3b_7a,"[7, 8, 9, 11, 15, 20, 21]",36,4a_4b_3b_7a_pitv,33,4cβ_4cα_stimulation_disynaptic_spectral,1.0000002088624234
+14,36,4a_4b_3b_7a_pitv,"[7, 8, 9, 11]",11,____,35,4a_4b_3b_7a_pitv,1.000000156183849
+13,35,4a_4b_3b_7a_pitv,"[7, 8, 9]",34,4a_4b_3b_7a_pitv,9,____,1.000000058611258
+12,34,4a_4b_3b_7a_pitv,"[7, 8]",7,4a_4b_3b_7a_,8,pitv_mip_pitd_stpp_stpa,1.0
+11,33,4cβ_4cα_stimulation_disynaptic_spectral,"[15, 20, 21]",32,4cβ_4cα___,21,disynaptic_antidromic_monostratified_photoreceptor_fixating,1.0
+10,32,4cβ_4cα___,"[15, 20]",15,4cβ_4cα___,20,____,0.9999999999999999
+9,31,retinal_koniocellular_parvocellular_interblobs_extrastriate,"[0, 1, 5, 10, 13]",5,sparse_broad_cones_cone_small,30,koniocellular_interblobs_parvocellular_retinal_extrastriate,0.9962965749347114
+8,30,koniocellular_interblobs_parvocellular_retinal_extrastriate,"[0, 1, 10, 13]",28,koniocellular_interblobs_parvocellular_retinal_extrastriate,10,v1_v3_v2_v3a_h1,0.9736178481876897
+7,29,2000_1999_2001_1996_2004,"[4, 12, 16]",12,1990_1994_1993_1991_1988,25,2000_1999_2001_1996_2004,0.9485935151375768
+6,28,koniocellular_interblobs_parvocellular_retinal_extrastriate,"[0, 1, 13]",13,parasol_magnocellular_viral_temporal_ventral,27,koniocellular_retinal_parvocellular_interblobs_extrastriate,0.9224852661298264
+5,27,koniocellular_retinal_parvocellular_interblobs_extrastriate,"[0, 1]",0,koniocellular_parvocellular_interblobs_retinal_extrastriate,1,deangelis_burkhalter_levitt_rizzolatti_ungerleider,0.8297917982982009
+4,26,rights_publishers_reserved_published_limited,"[17, 19]",19,369_363_361_365_367,17,rights_publishers_reserved_published_limited,0.8278113724305448
+3,25,2000_1999_2001_1996_2004,"[4, 16]",4,5692_6171_3349_ey018982_6285,16,2000_2001_2004_2002_1997,0.825716762614833
+2,24,neurophysiol_neurosci_physiol_neurol_extrastriate,"[2, 3, 6]",23,cytoarchitectonic_interlaminar_neurophysiol_neurosci_physiol,2,neuropsychologia_neurophysiol_neurosci_physiol_prestriate,0.644238460719991
+1,23,cytoarchitectonic_interlaminar_neurophysiol_neurosci_physiol,"[3, 6]",6,trivirgatus_interlaminar_occipitotemporal_neurophysiol_neurosci,3,cytoarchitectonic_somatosensory_visuomotor_neurosci_neurophysiol,0.5351990273498108
+0,22,mstl_neuroscience_mstd_nature_v6,"[14, 18]",18,neuroscience_nature_reviews__,14,mstl_mstd_po_v6_nature,0.40560894754636834
