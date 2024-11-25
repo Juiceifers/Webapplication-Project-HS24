@@ -135,53 +135,59 @@ document.addEventListener("DOMContentLoaded", function () {
         activeItem.classList.add("highlight");
     }
 
-    // Function to display the results after processing
-    function displayResults(session) {
-        // Display the map name heading
-        mapNameHeading.textContent = `${session.name}`;
-        mapNameHeading.style.color = "#103D4A";
-        mapNameHeading.style.display = "block";
-
-        // Clear previous results
-        resultsContainer.innerHTML = '';
-        resultsContainer.prepend(mapNameHeading); // Ensure heading stays on top
-
-        // Create the uploaded files list section
-        const uploadedFilesSection = document.createElement("div");
-        uploadedFilesSection.classList.add("uploaded-files-info");
-        const fileNames = session.files.join(', ');
-
-        uploadedFilesSection.innerHTML = `
-            <p><strong>Files used:</strong> ${fileNames || 'No files uploaded'}</p>
-        `;
-        resultsContainer.appendChild(uploadedFilesSection);
-
-        // Create the text summary div
-        const textSummary = document.createElement("div");
-        textSummary.classList.add("result-box");
-        textSummary.innerHTML = `
-            <h2>Text Summary</h2>
-            <p>Document size: ${session.results.textSummary.size}</p>
-            <p>Number of pages: ${session.results.textSummary.pages}</p>
-            <p>% info represented: ${session.results.textSummary.percentage}%</p>
-            <button onclick="openTextSummary()">Open in new tab</button>
-            <button onclick="exportToPDF()">Export to .pdf</button>
-        `;
-        resultsContainer.appendChild(textSummary);
-
-        // Create the mind map div
-        const mindMap = document.createElement("div");
-        mindMap.classList.add("result-box");
-        mindMap.innerHTML = `
-            <h2>Mind Map</h2>
-            <p>Document size: ${session.results.mindMap.size}</p>
-            <p>Number of nodes: ${session.results.mindMap.nodes}</p>
-            <p>% info represented: ${session.results.mindMap.percentage}%</p>
-            <button onclick="openMindMap()">Open in new tab</button>
-            <button onclick="exportToSVG()">Export to .svg</button>
-        `;
-        resultsContainer.appendChild(mindMap);
-    }
+        // Function to display the results after processing
+        function displayResults(session) {
+            // Display the map name heading
+            mapNameHeading.textContent = `${session.name}`;
+            mapNameHeading.style.color = "#103D4A";
+            mapNameHeading.style.display = "block";
+    
+            // Clear previous results
+            resultsContainer.innerHTML = '';
+            resultsContainer.prepend(mapNameHeading); // Ensure heading stays on top
+    
+            // Create the uploaded files list section
+            const uploadedFilesSection = document.createElement("div");
+            uploadedFilesSection.classList.add("uploaded-files-info");
+            const fileNames = session.files.join(', ');
+    
+            uploadedFilesSection.innerHTML = `
+                <p><strong>Files used:</strong> ${fileNames || 'No files uploaded'}</p>
+            `;
+            resultsContainer.appendChild(uploadedFilesSection);
+    
+            // Create a container for the result boxes
+            const resultsRow = document.createElement("div");
+            resultsRow.classList.add("results-container-row");
+            resultsContainer.appendChild(resultsRow);
+    
+            // Create the text summary div
+            const textSummary = document.createElement("div");
+            textSummary.classList.add("result-box");
+            textSummary.innerHTML = `
+                <h2>Text Summary</h2>
+                <p>Document size: ${session.results.textSummary.size}</p>
+                <p>Number of pages: ${session.results.textSummary.pages}</p>
+                <p>% info represented: ${session.results.textSummary.percentage}%</p>
+                <button onclick="openTextSummary()">Open in new tab</button>
+                <button onclick="exportToPDF()">Export to .pdf</button>
+            `;
+            resultsRow.appendChild(textSummary);
+    
+            // Create the mind map div
+            const mindMap = document.createElement("div");
+            mindMap.classList.add("result-box");
+            mindMap.innerHTML = `
+                <h2>Mind Map</h2>
+                <p>Document size: ${session.results.mindMap.size}</p>
+                <p>Number of nodes: ${session.results.mindMap.nodes}</p>
+                <p>% info represented: ${session.results.mindMap.percentage}%</p>
+                <button onclick="openMindMap()">Open in new tab</button>
+                <button onclick="exportToSVG()">Export to .svg</button>
+            `;
+            resultsRow.appendChild(mindMap);
+        }
+    
 
     // Dummy functions for export and open actions
     function openTextSummary() {

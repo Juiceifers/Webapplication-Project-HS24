@@ -313,21 +313,16 @@ progress::-moz-progress-bar {
 
 /* Styling the progress text */
 #progressText {
-    font-size: 18px;
+    font-size: 20px;
     margin-top: 10px;
     color: #333;
 }
 
 
 /* Result container for the text summary and mind map */
-.results-container {
-    display: flex;                 /* Use flexbox layout */
-    flex-direction: row;           /* Ensure items are laid out in a row */
-    justify-content: space-between; /* Add spacing between the boxes */
-    align-items: flex-start;       /* Align items at the top */
-    flex-wrap: wrap;             /* Prevent wrapping */
-    gap: 20px;                     /* Add spacing between boxes */
-    padding: 20px;
+#results-container {
+    display: flex; /* Set to flex to ensure children are aligned properly */
+    flex-direction: column; /* Align items in a row */
 }
 
 
@@ -336,19 +331,27 @@ progress::-moz-progress-bar {
     background-color:#dfd6b9;
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 3px solid rgba(255, 255, 255, 0.3);
     border-radius: 16px;
     padding: 20px;
     margin-bottom: 20px;             
     box-shadow: 0px 8px 32px rgba(0, 0, 0, 0.3); /* Optional box shadow */
     text-align: center;            /* Center the text inside */
     max-width: 45%;
+    flex: 1;            
 }
 
+.results-container-row {
+    display: flex; /* Lay result boxes in a row */
+    justify-content: space-around; /* Space between result boxes */
+    align-items: flex-start; /* Align items at the top */
+    flex-wrap: nowrap; /* Ensure boxes remain in one row */
+    gap: 20px; /* Spacing between result boxes */
+}
 /* Title inside result box */
 .result-box h2 {
     margin-bottom: 15px;
-    font-size: 24px;
+    font-size: 30px;
     color: #333;
 }
 
@@ -386,6 +389,7 @@ progress::-moz-progress-bar {
     margin-bottom: 20px;
 }
 .uploaded-files-info {
+    display: block;
     padding: 10px;
     font-size: 14px;
     color: #555;
