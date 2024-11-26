@@ -82,9 +82,9 @@ header {
 .disclaimer {
     font-size: x-small;
     margin-bottom: 20px;
-    margin-top: 10px;
+    margin-top: 25px;
     text-align: center;
-    color: lightgray;
+    color: rgb(84, 81, 81);
     font-style: italic;
 }
 
@@ -343,7 +343,7 @@ progress::-moz-progress-bar {
 
 .results-container-row {
     display: flex; /* Lay result boxes in a row */
-    justify-content: space-around; /* Space between result boxes */
+    justify-content: space-evenly; /* Space between result boxes */
     align-items: flex-start; /* Align items at the top */
     flex-wrap: nowrap; /* Ensure boxes remain in one row */
     gap: 20px; /* Spacing between result boxes */
