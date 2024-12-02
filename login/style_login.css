@@ -1,0 +1,286 @@
+* {
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+body, html {
+    margin: 0; /* Ensures no extra space around the page */
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+    color: #fff;
+    font-size: 1.5rem;
+    font-family: 'Tahoma', sans-serif;
+}
+
+.header h1, .header p {
+    margin: 0; /* Remove margin from heading and paragraph */
+    padding: 0; /* Ensure no padding contributes to spacing */
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    margin: 0.7% auto;
+    width: 70%;
+    max-width: 1200px;
+}
+
+.logo img {
+    height: 10vh;
+    width: auto;
+    margin-right: 7px;
+    margin-top: 5px;
+}
+
+#slogan {
+    font-size: x-small;
+    color: lightgray;
+    font-style: italic;
+    text-align: left;
+    margin-left: 6px;
+}
+
+.mainContent {
+    display: flex; /* Use Flexbox for horizontal layout */
+    flex-direction: row; /* Ensure items are in a row */
+    align-items: center; /* Align items vertically in the center */
+    justify-content: center; 
+    gap: 10px; 
+}
+
+
+body {
+    background: rgb(8,34,41);
+    /*background: linear-gradient(0deg, rgba(8,34,41,1) 0%, rgba(16,61,74,1) 99%); */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    background-image: url("https://i.pinimg.com/736x/eb/60/82/eb60823cf0dd7c2a92edee36ed2a3fe6.jpg");
+}
+
+.inner { padding: 5%; }
+
+
+#close-button {
+    background-color: #911c5e;
+    color: #fed1eb;
+    border: 2px solid #fc8ccc;
+    font-size: 14px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 20px;
+    width: auto;
+    height: 40px;
+    padding: 8px;
+    overflow: hidden;
+    transition: background-color 0.3s ease;
+}
+
+#close-button:hover {
+    background-color: #a33f78;
+}
+
+#container {
+    max-width: auto;
+    height: auto; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1% auto; /* Center it horizontally in the page */
+    margin-top: 0; /* Removes space above the container */
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    position: relative; /* To ensure it doesn't change position */
+}
+
+#container section h1,
+#container section p {
+    margin-top: 0; /* Removes default margins for headings or paragraphs */
+}
+
+div#container section {
+    display: flex;
+    justify-content: space-between;
+    margin: 2% auto;
+    width: 70%;
+    max-width: 1200px;
+    background-color: rgba(51, 133, 155, 0.75);
+    backdrop-filter: blur(3.5px);
+    -webkit-backdrop-filter: blur(3.5px);
+    border: 1px solid rgba(51, 133, 155, 0.38);
+    border-radius: 30px;
+    overflow: hidden;
+    text-align: center;
+    box-shadow: 8px 10px 25px 0px #161616;
+    min-height: 350px; /* Set a minimum height */
+    transition: height 0.8s ease-in-out; /* Smooth transition for height adjustments */
+    padding-top: 0;
+    margin-top: 0;
+    margin-bottom: 1%;
+}
+
+div#container section article, 
+div#container section aside {
+    width: 50%; /* Maintain proportions */
+}
+
+div#container section article {
+    width: 45%;
+    background-color: rgba(180, 140, 10, 1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2%;
+}
+
+div#container section article h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #ffffff;
+    font-family: 'Courier', monospace;
+}
+
+div#container section article p {
+    font-size: 20px;
+    margin-top: 10px;
+    color: #fff;
+}
+
+div#container section article a.btn {
+    display: inline-block;
+    padding: 10px 30px;
+    border: #fc8ccc solid 2px;
+    border-radius: 25px;
+    font-size: 18px;
+    text-decoration: none;
+    margin-top: 30px;
+    font-weight: 600;
+    color: #fed1eb;
+    background-color: #911c5e ;
+    transition: 0.2s all ease;
+}
+
+div#container section article a.btn:hover {
+    background-color: #a33f78;
+}
+
+div#container section aside {
+    width: 55%;
+    padding: 2%;
+}
+
+div#container section aside h2 {
+    font-size: 1.8rem;
+    color: #fff;
+    font-weight: 700;
+    font-family: 'Courier', monospace;
+}
+
+div#container section aside p {
+    font-size: 20px;
+    color: #fff;
+}
+
+form {
+    width: 90%;
+    max-width: 350px;
+    margin: 20px auto 0 auto;
+}
+
+form input[type=text],
+form input[type=email],
+form input[type=password] {
+    width: calc(100% - 55px);
+    border: none;
+    padding: 10px 15px 8px 40px;
+    margin: 8px 0;
+    font-size: 15px;
+    border-radius: 20px;
+    background-position: 4% 50%;
+    background-repeat: no-repeat;
+    background-size: 18px;
+}
+
+form input[type=text] { background-image: url('https://icons.veryicon.com/png/o/internet--web/prejudice/user-128.png'); }
+
+form input[type=email] { background-image: url('https://cdn.iconscout.com/icon/free/png-256/free-email-icon-download-in-svg-png-gif-file-formats--mail-envelope-message-miscellaneous-pack-icons-1713291.png?f=webp&w=256'); }
+
+form input[type=password] { background-image: url('https://icons.veryicon.com/png/o/miscellaneous/mall-icon-set/password-117.png'); }
+
+form button[type=submit] {
+    margin-top: 20px;
+    background-color: #911c5e;
+    color: #fed1eb;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 10px 30px;
+    border-radius: 25px;
+    transition: 0.2s all ease;
+    border: #fc8ccc solid 2px;
+}
+
+form button[type=submit]:hover {
+    background-color: #a33f78;
+}
+
+@media(max-width: 760px)  {
+    div#container section {
+        flex-flow: column;
+    }
+
+    div#container section article,
+    div#container section aside {
+        width: 100%;
+    }
+}
+
+html {
+    font-size: calc(10px + 1vw); /* Dynamically scales with viewport width */
+}
+
+
+.footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+h3 {
+    color: lightgray;
+    font-size: small;
+    font-weight: normal;
+}
+
+
+
+
+#login-section,
+#register-section {
+    position: relative;
+    overflow: hidden;
+    transform: translateX(0); /* Initial transform position */
+    transition: transform 0.6s ease-in-out, background-color 0.6s ease-in-out;
+}
+
+#login-section {
+    transition: background-color 0.6s ease-in-out, transform 0.6s ease-in-out;
+}
+
+#register-section {
+    transition: background-color 0.6s ease-in-out, transform 0.6s ease-in-out;
+}
+
