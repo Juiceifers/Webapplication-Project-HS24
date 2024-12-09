@@ -156,6 +156,11 @@ document.addEventListener("DOMContentLoaded", function () {
         `;
         resultsContainer.appendChild(uploadedFilesSection);
 
+        // Create a container for the result boxes
+        const resultsRow = document.createElement("div");
+        resultsRow.classList.add("results-container-row");
+        resultsContainer.appendChild(resultsRow);
+
         // Create the text summary div
         const textSummary = document.createElement("div");
         textSummary.classList.add("result-box");
@@ -167,7 +172,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <button onclick="openTextSummary()">Open in new tab</button>
             <button onclick="exportToPDF()">Export to .pdf</button>
         `;
-        resultsContainer.appendChild(textSummary);
+        resultsRow.appendChild(textSummary);
 
         // Create the mind map div
         const mindMap = document.createElement("div");
@@ -180,7 +185,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <button onclick="openMindMap()">Open in new tab</button>
             <button onclick="exportToSVG()">Export to .svg</button>
         `;
-        resultsContainer.appendChild(mindMap);
+        resultsRow.appendChild(mindMap);
     }
 
     // Dummy functions for export and open actions
