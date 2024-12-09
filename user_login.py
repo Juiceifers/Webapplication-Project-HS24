@@ -12,6 +12,7 @@ def login():
 
     # Fetch user from the database
     user = database.get_user(username)  # Using the imported function
+    maps = database.get_user_maps(user[0])
     if user and user[2] == password:  # Compare stored password (user[2]) with the entered password
         # Successful login
         return jsonify({"success": True, "username": username})
