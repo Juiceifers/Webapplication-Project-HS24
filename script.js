@@ -65,7 +65,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const files = Array.from(uploadFileInput.files);
         const fileNames = files.map(file => file.name);
 
-        alert("fileNames!!");
 
         if (files.length === 0) {
             alert("Please upload a file first!");
@@ -77,12 +76,16 @@ document.addEventListener("DOMContentLoaded", function () {
         //formData.append("map_name", mapName);
         //formData.append("user_name", userName.textContent);
 
+        const user = JSON.parse(loggedInUser);
+        let user_name = user.username;
+
+
         formData.append("map_name", mapName || "default_map_name");
-        formData.append("user_name", userName.textContent || "default_user_name");
+        formData.append("user_name", user_name || "default_user_name");
 
         formData.append("file", files[0]);
 
-        alert(formData.stringify());
+        //alert(formData.stringify());
 
         for (let [key, value] of formData.entries()) {
             console.log(`${key}: ${value}`);
@@ -90,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         console.log("MapName : " + mapName);
 
-        //fetch('http://127.0.0.1:5000/upload', {method: "POST", body: formData});
+        fetch('http://127.0.0.1:5000/upload', {method: "POST", body: formData});
         const session = {
             name: mapName,
             files: fileNames,
@@ -280,10 +283,11 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-
+    
     // If logged in, update the profile section
     if (loggedInUser) {
         const user = JSON.parse(loggedInUser);
+
         userName.textContent = `Hello, ${user.username}`;
         loginRegisterLink.innerHTML = '<a href="#" id="logoutLink">Logout</a>';
 

@@ -41,9 +41,11 @@ def get_user(username):
 def add_map(map_name, user_name, files):
     conn = create_connection()
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM users WHERE username = ?', (user_name))
-    user_maps = cursor.fetchone()[3]
-    user_id = cursor.fetchone()[0]
+    cursor.execute('SELECT * FROM users WHERE username = ?', (user_name, ))
+    user_entry = cursor.fetchone()
+
+    user_maps = user_entry[3]
+    user_id = user_entry[0]
 
     cursor.execute('INSERT INTO maps (map_name, user_id, files) VALUES (?, ?, ?)', (map_name, user_id, files))
 
@@ -51,10 +53,11 @@ def add_map(map_name, user_name, files):
     "12 24 1"
     "12 24 1 5"
             
-    new_maps = " ".join(user_maps.split().append(user_maps))
+    #new_maps = " ".join(user_maps.split().append(user_maps))
+    new_maps = user_maps
 
 
-    cursor.execute('UPDATE users SET map_name=? WHERE username = ?', (new_maps, user_name))
+    cursor.execute('UPDATE users SET maps=? WHERE username = ?', (new_maps, user_name))
     conn.commit()
     conn.close()
 
