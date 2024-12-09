@@ -27,6 +27,7 @@ CORS(app)
 database.create_table()  # Ensure the table is created
 
 
+
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -44,8 +45,24 @@ def upload_file():
         if file.filename == '':
             flash('No selected file')
             return redirect(request.url)
+        
+
         if file and allowed_file(file.filename):
+
+            print("valid file")
+
+            print(request.form, len(request.form))
+            print("Files len:", len(request.files))
+
+            user_name = request.json["user_name"]
+            map_name = request.form["map_name"]
+
+            print(user_name, map_name)
+
             filename = secure_filename(file.filename)
+
+            database.add_map(map_name, user_name, filename)
+
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
             fpath = f"uploads/{filename}"
@@ -78,7 +95,7 @@ def register():
     # Check if the user already exists in the database
     if database.get_user(username):
         return jsonify({"success": False, "message": "User already exists"})
-    
+
     # Add user to the database
     database.add_user(username, password)
     return jsonify({"success": True, "message": "User registered successfully"})

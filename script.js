@@ -16,6 +16,16 @@ document.addEventListener("DOMContentLoaded", function () {
     mapNameHeading.style.display = "none";
     resultsContainer.prepend(mapNameHeading);
 
+    // User Profile Handling
+    const userProfile = document.querySelector('.userProfile');
+    const userName = document.getElementById("user-name");
+    const loginRegisterLink = document.getElementById("login-register");
+    const logoutLink = document.createElement('a');
+
+    // Check if the user is logged in from localStorage
+    const loggedInUser = localStorage.getItem("loggedInUser");
+    
+
     // Clear previous sessions when the page is loaded
     localStorage.removeItem("sessions");
     let sessions = [];
@@ -55,14 +65,20 @@ document.addEventListener("DOMContentLoaded", function () {
         const files = Array.from(uploadFileInput.files);
         const fileNames = files.map(file => file.name);
 
+        //console.log(fileNames)
+
         if (files.length === 0) {
             alert("Please upload a file first!");
             return;
         }
-
+        
         let formData = new FormData();
      
+        formData.append("map_name", mapName);
+        formData.append("user_name", userName.textContent);
         formData.append("file", files[0]);
+
+
         fetch('http://127.0.0.1:5000/upload', {method: "POST", body: formData});
         const session = {
             name: mapName,
@@ -206,7 +222,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-        const loginForm = document.getElementById('loginForm');
+    const loginForm = document.getElementById('loginForm');
     const registerForm = document.getElementById('registerForm');
 
     if (loginForm) {
@@ -253,14 +269,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // User Profile Handling
-    const userProfile = document.querySelector('.userProfile');
-    const userName = document.getElementById("user-name");
-    const loginRegisterLink = document.getElementById("login-register");
-    const logoutLink = document.createElement('a');
-
-    // Check if the user is logged in from localStorage
-    const loggedInUser = localStorage.getItem("loggedInUser");
 
     // If logged in, update the profile section
     if (loggedInUser) {
