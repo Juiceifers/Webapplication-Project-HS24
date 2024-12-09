@@ -65,7 +65,8 @@ def summarize_pdf(PATH):
         f.write(final_summary)
 
 def main():
-    summarize_pdf(PATH)
+    #summarize_pdf(PATH)
+    summarize_pdf("topic_mods/callaway.pdf")
 
 if __name__ == "__main__":
     main()

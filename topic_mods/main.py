@@ -2,6 +2,7 @@
 import fitz
 import networkx as nx
 import matplotlib.pyplot as plt
+from matplotlib import rcParams
 from bertopic import BERTopic
 from bertopic.representation import KeyBERTInspired
 from sklearn.feature_extraction.text import CountVectorizer
@@ -59,7 +60,7 @@ def try_bert(text):
 
     umap_model = UMAP(n_neighbors=15, n_components=5, min_dist=0.0, metric='cosine', random_state=42)
     vectorizer_model = CountVectorizer(stop_words="english")
-    # Fine-tune your topic representations
+
     representation_model = KeyBERTInspired()
     #topic_model = BERTopic()
     topic_model = BERTopic(n_gram_range=(1, 2), embedding_model=embedding_model,umap_model=umap_model,calculate_probabilities=False, vectorizer_model=vectorizer_model, representation_model=representation_model)
@@ -97,7 +98,7 @@ def try_bert(text):
     hierarchical_topics = topic_model.hierarchical_topics(text)
     topic_model.visualize_hierarchy(hierarchical_topics=hierarchical_topics)
 
-    fig = topic_model.visualize_hierarchy()
+    fig = topic_model.visualize_hierarchy(custom_labels=True)
     fig.show()
     fig.write_html("data/hierarchy.html")
 
@@ -124,7 +125,8 @@ def try_bert(text):
 
     print(hierarchical_topics.head())
 
-    visualize_topic_tree(hierarchical_topics)
+    G = create_networkx_tree(hierarchical_topics, topic_labels)
+    visualize_networkx_tree(G)
     #visualize_mindmap(tree)
     #tree = create_tree_structure(hierarchical_topics)
 
@@ -136,6 +138,91 @@ def load_df():
     visualize_topic_tree(hierarchical_topics)
 
 
+import pandas as pd
+import networkx as nx
+import matplotlib.pyplot as plt
+
+def create_networkx_tree(hierarchical_topics_df, custom_labels=None):
+    """
+    Create a NetworkX tree graph from hierarchical_topics data.
+
+    Parameters:
+        hierarchical_topics_df (pd.DataFrame): DataFrame with columns:
+                                               Parent_ID, Child_Left_ID, Child_Right_ID.
+        custom_labels (dict): Mapping of topic IDs to custom labels.
+
+    Returns:
+        G (networkx.DiGraph): Directed graph representing the hierarchical tree.
+    """
+    G = nx.DiGraph()
+    
+    # Iterate through rows and add parent-child relationships
+    for _, row in hierarchical_topics_df.iterrows():
+        parent_id = row['Parent_ID']
+        child_left_id = row['Child_Left_ID']
+        child_right_id = row['Child_Right_ID']
+        
+        # Use custom labels if available
+        parent_label = custom_labels.get(parent_id, row['Parent_Name']) if custom_labels else row['Parent_Name']
+        child_left_label = custom_labels.get(child_left_id, row['Child_Left_Name']) if custom_labels else row['Child_Left_Name']
+        child_right_label = custom_labels.get(child_right_id, row['Child_Right_Name']) if custom_labels else row['Child_Right_Name']
+        
+        # Add edges to the graph
+        G.add_edge(parent_label, child_left_label)
+        G.add_edge(parent_label, child_right_label)
+    
+    return G
+
+def visualize_networkx_tree(G, figsize=(12, 8), title="Topic Hierarchy"):
+    """
+    Visualize a tree structure using NetworkX.
+
+    Parameters:
+        G (networkx.DiGraph): Directed graph representing the hierarchical tree.
+        figsize (tuple): Size of the figure.
+        title (str): Title for the visualization.
+    """
+
+    rcParams['font.family'] = 'DejaVu Sans'
+
+    try:
+        # Use graphviz layout for a tree structure
+        #pos = nx.drawing.nx_agraph.graphviz_layout(G, prog="dot")
+        
+        #pos = nx.drawing.nx_pydot.pydot_layout(G, prog="dot")
+        
+        plt.figure(figsize=(12, 8))
+        pos = nx.spring_layout(G, k=5, iterations=100)  # Tree layout
+
+
+    except ImportError:
+        raise ImportError("Graphviz layout requires 'pygraphviz' or 'pydot'. Install one of them to use this function.")
+    
+
+    plt.figure(figsize=figsize)
+    nx.draw(
+        G, 
+        pos, 
+        with_labels=True, 
+        node_color="lightblue", 
+        node_size=2000, 
+        font_size=10, 
+        font_weight="bold", 
+        arrows=True
+    )
+    plt.title(title)
+    plt.show()
+
+# Example Usage
+# hierarchical_topics = pd.read_csv('hierarchical_topics.csv')  # Load your hierarchical topics data
+# custom_labels = {
+#     20: "Root Topic",
+#     24: "Neurophysiology",
+#     41: "Retinal Studies",
+#     40: "Visual Neuroscience"
+# }
+# G = create_networkx_tree(hierarchical_topics, custom_labels=custom_labels)
+# visualize_networkx_tree(G)
 
 # Step 3: Visualize the tree as a graph
 def visualize_topic_tree(hierarchical_topics, title="Topic Hierarchy"):
@@ -148,6 +235,7 @@ def visualize_topic_tree(hierarchical_topics, title="Topic Hierarchy"):
         print(i)
 
     topic_tree = nx.DiGraph()
+    topic_tree = nx.tree.tree_graph
 
     for _, row in hierarchical_topics.iterrows():
         parent_id = row["Parent_ID"]
@@ -262,19 +350,32 @@ def process_file(file_path):
 
 if __name__ == "__main__":
 
+    import sys  
+  
+    # Using sys.getdefaultencoding() method  
+    encoding = sys.getdefaultencoding()  
+    
+    # Print the current string encoding used  
+    print("DEFAULT ENCODING:",encoding)  
+
+    
+
     #load_df()
     #quit(0)
 
-    filepath = "bertopic/MAT-notes-part1.pdf"
     filepath = ["bertopic/MAT-notes-part1.pdf", "bertopic/MAT-notes-part2.pdf"]
 #    create_txt(filepath)
     filepath = "bertopic/lecture1-introduction.pdf"
-    filepath = "bertopic/callaway.pdf"
+    filepath = "uploads/callaway.pdf"
+    filepath = "uploads/MAT-notes-part1.pdf"
 
     txt = text_iter_from_pdf(filepath, split_lines=True)
-
-    #try_bert(txt)
     try_bert(txt)
+
+    #hierarchical_topics = pd.read_csv("data/hierarchy_df.csv", encoding="utf-8")
+    #G = create_networkx_tree(hierarchical_topics)
+    #visualize_networkx_tree(G)
+
 
 #    with open("bertopic/pdf_text.txt", encoding="UTF-8") as f:
 #        try_bert(f.read())
