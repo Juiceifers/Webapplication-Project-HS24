@@ -57,8 +57,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // When the "Do the magic!" button is clicked
     processButton.addEventListener("click", function () {
         const mapName = mapNameInput.value.trim();
-        if (mapName === "") {
-            alert("Please Enter a map name!");
+        if (mapName === "" || / /.test(mapName)) {
+            alert("Please Enter a map name without spaces!");
             return;
         }
 

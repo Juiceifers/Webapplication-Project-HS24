@@ -41,6 +41,7 @@ def get_user(username):
 def add_map(map_name, user_name, files):
     conn = create_connection()
     cursor = conn.cursor()
+
     cursor.execute('SELECT * FROM users WHERE username = ?', (user_name, ))
     user_entry = cursor.fetchone()
 
@@ -53,11 +54,17 @@ def add_map(map_name, user_name, files):
     "12 24 1"
     "12 24 1 5"
             
-    #new_maps = " ".join(user_maps.split().append(user_maps))
-    new_maps = user_maps
+    
 
+    if user_maps == "":
+        new_maps = map_name
+    else:
+        new_maps = " ".join(user_maps.split() + [map_name])
 
-    cursor.execute('UPDATE users SET maps=? WHERE username = ?', (new_maps, user_name))
+    print("NEW MAPS:", new_maps)
+
+    cursor.execute('UPDATE users SET maps = ? WHERE id = ?', (new_maps, user_id))
+
     conn.commit()
     conn.close()
 
