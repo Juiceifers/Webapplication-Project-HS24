@@ -53,9 +53,10 @@ def upload_file():
 
             print(request.form, len(request.form))
             print("Files len:", len(request.files))
+            print(f"Request content type: {request.content_type}")
 
-            user_name = request.json["user_name"]
-            map_name = request.form["map_name"]
+            user_name = request.form.get("user_name")
+            map_name = request.form.get("map_name")
 
             print(user_name, map_name)
 

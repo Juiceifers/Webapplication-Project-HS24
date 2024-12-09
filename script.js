@@ -58,14 +58,14 @@ document.addEventListener("DOMContentLoaded", function () {
     processButton.addEventListener("click", function () {
         const mapName = mapNameInput.value.trim();
         if (mapName === "") {
-            alert("Please enter a map name!");
+            alert("Please Enter a map name!");
             return;
         }
 
         const files = Array.from(uploadFileInput.files);
         const fileNames = files.map(file => file.name);
 
-        //console.log(fileNames)
+        alert("fileNames!!");
 
         if (files.length === 0) {
             alert("Please upload a file first!");
@@ -74,12 +74,23 @@ document.addEventListener("DOMContentLoaded", function () {
         
         let formData = new FormData();
      
-        formData.append("map_name", mapName);
-        formData.append("user_name", userName.textContent);
+        //formData.append("map_name", mapName);
+        //formData.append("user_name", userName.textContent);
+
+        formData.append("map_name", mapName || "default_map_name");
+        formData.append("user_name", userName.textContent || "default_user_name");
+
         formData.append("file", files[0]);
 
+        alert(formData.stringify());
 
-        fetch('http://127.0.0.1:5000/upload', {method: "POST", body: formData});
+        for (let [key, value] of formData.entries()) {
+            console.log(`${key}: ${value}`);
+        }
+
+        console.log("MapName : " + mapName);
+
+        //fetch('http://127.0.0.1:5000/upload', {method: "POST", body: formData});
         const session = {
             name: mapName,
             files: fileNames,
@@ -242,7 +253,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     alert(data.message);
                     if (data.message === "Login successful") {
                         localStorage.setItem("loggedInUser", JSON.stringify({ username }));
-                        window.location.href = "index.html";  // Redirect to home page
+                        window.location.href = "/index.html";  // Redirect to home page
                     }
                 })
                 .catch(error => console.error('Error:', error));
