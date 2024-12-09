@@ -204,4 +204,79 @@ document.addEventListener("DOMContentLoaded", function () {
     function exportToSVG() {
         console.log("Exporting to SVG...");
     }
+
+
+        const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+
+    if (loginForm) {
+        loginForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+
+            fetch('http://127.0.0.1:5000/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            })
+                .then(response => response.text())
+                .then(text => {
+                    const data = JSON.parse(text);
+                    alert(data.message);
+                    if (data.message === "Login successful") {
+                        localStorage.setItem("loggedInUser", JSON.stringify({ username }));
+                        window.location.href = "index.html";  // Redirect to home page
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    }
+
+    if (registerForm) {
+        registerForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+            const username = document.getElementById('registerUsername').value;
+            const password = document.getElementById('registerPassword').value;
+
+            fetch('http://127.0.0.1:5000/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            })
+                .then(response => response.text())
+                .then(text => {
+                    const data = JSON.parse(text);
+                    alert(data.message);
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    }
+
+    // User Profile Handling
+    const userProfile = document.querySelector('.userProfile');
+    const userName = document.getElementById("user-name");
+    const loginRegisterLink = document.getElementById("login-register");
+    const logoutLink = document.createElement('a');
+
+    // Check if the user is logged in from localStorage
+    const loggedInUser = localStorage.getItem("loggedInUser");
+
+    // If logged in, update the profile section
+    if (loggedInUser) {
+        const user = JSON.parse(loggedInUser);
+        userName.textContent = `Hello, ${user.username}`;
+        loginRegisterLink.innerHTML = '<a href="#" id="logoutLink">Logout</a>';
+
+        // Logout functionality
+        document.getElementById('logoutLink').addEventListener('click', function (e) {
+            e.preventDefault();
+            localStorage.removeItem("loggedInUser");
+            window.location.reload();
+        });
+    } else {
+        userName.textContent = "No User :(";
+        loginRegisterLink.innerHTML = '<a href="Login/login.html">Login</a>';
+    }
+
 });

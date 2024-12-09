@@ -8,6 +8,8 @@ def login():
     username = request.json.get('username')
     password = request.json.get('password')
 
+    print("USER:", username)
+
     # Fetch user from the database
     user = database.get_user(username)  # Using the imported function
     if user and user[2] == password:  # Compare stored password (user[2]) with the entered password
