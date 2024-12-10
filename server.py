@@ -145,7 +145,7 @@ def login():
 
 if __name__ == '__main__':
     print("starting flask API")
-    app.run(host='0.0.0.0', port=52091)
+    #app.run(host='0.0.0.0', port=52091)
 
-    #app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5000)
     #http://172.23.66.241:52091
