@@ -10,31 +10,28 @@ from umap import UMAP
 import pandas as pd
 from transformers.pipelines import pipeline
 import spacy
+import re
+import flask
+from flask import Flask
+
+import sys
+import os
+
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.dirname(SCRIPT_DIR))
+
+
+from Mert_testing.summarizer import get_summarized_pdf
 
 spacy
 
 spacy.prefer_gpu()
 
-#from bertopic import BERTopic
-#from sklearn.datasets import fetch_20newsgroups
-
-#docs = fetch_20newsgroups(subset='all',  remove=('headers', 'footers', 'quotes'))['data']
-
-#topic_model = BERTopic()
-#topics, probs = topic_model.fit_transform(docs)
-
-
-# Function to extract text from PDF
-def extract_text_from_pdf(pdf_path):
-    doc = fitz.open(pdf_path)
-    text = ''
-    for i, page in enumerate(doc):
-        text += page.get_text()
-        #text += f"<PAGE {i}>\n{page.get_text().strip().replace("\n", "\n\t")}\n<PAGE END>\n"
-    return text
 
 def text_iter_from_pdf(pdf_path, split_lines=False):
     text = []
+
+    spans = []
 
     it = [pdf_path] if isinstance(pdf_path, str) else pdf_path
 
@@ -42,15 +39,45 @@ def text_iter_from_pdf(pdf_path, split_lines=False):
         doc = fitz.open(pdf_path)
         for i, page in enumerate(doc):
 
-            if split_lines:
-                text += page.get_text().split("\n")
+            doc_path = pdf_path.split("/")[-1] + f"//Page_{i}"
+
+            #for html_text in page.get_text("html"):
+                #block_text = re.findall(r"<div.*<\/div>", page.get_text("html"))
+                #text.append(page.get_text("html"))
+
+            #for (x0, y0, x1, y1, block_text, block_no, block_type) in page.get_text("blocks"):
+
+            blocks = [x[4] for x in page.get_text("blocks")]
+
+            if len(blocks) > 2:
+
+                join_flag = any([len(block_text.split(" ")) < 5 for block_text in blocks])
+
+                if join_flag:
+                    text.append(page.get_text())
+                    spans.append(doc_path)
+                else:
+                    for block_text in blocks:
+                        if split_lines:
+                            text += block_text.split("\n")
+                        elif len(block_text.split(" ")) > 2:
+                            text.append(block_text)
+                            spans.append(doc_path)
+
+
+
+                #for block_text in page.get_text("blocks"):                
+
             else:
                 text.append(page.get_text())
+                spans.append(doc_path)
+
+
             #text += f"<PAGE {i}>\n{page.get_text().strip().replace("\n", "\n\t")}\n<PAGE END>\n"
-    return text
 
+    return text, spans
 
-def try_bert(text):
+def try_bert(text, spans, map_name="DEFAULT_MAP"):
 
     pd.set_option('display.max_columns', None)
 
@@ -58,12 +85,12 @@ def try_bert(text):
     #                                         'attribute_ruler', 'lemmatizer'])
     embedding_model = pipeline("feature-extraction", model="distilbert-base-cased")
 
-    umap_model = UMAP(n_neighbors=15, n_components=5, min_dist=0.0, metric='cosine', random_state=42)
+    umap_model = UMAP(n_neighbors=10, n_components=5, min_dist=0.0, metric='cosine', random_state=42)
     vectorizer_model = CountVectorizer(stop_words="english")
 
     representation_model = KeyBERTInspired()
     #topic_model = BERTopic()
-    topic_model = BERTopic(n_gram_range=(1, 2), embedding_model=embedding_model,umap_model=umap_model,calculate_probabilities=False, vectorizer_model=vectorizer_model, representation_model=representation_model)
+    topic_model = BERTopic(n_gram_range=(1, 2), min_topic_size=8, embedding_model=embedding_model,umap_model=umap_model,calculate_probabilities=False, vectorizer_model=vectorizer_model, representation_model=representation_model)
 
 
     print("running BERTopic on pdf text...")
@@ -96,13 +123,15 @@ def try_bert(text):
         print(pout)
 
     hierarchical_topics = topic_model.hierarchical_topics(text)
-    topic_model.visualize_hierarchy(hierarchical_topics=hierarchical_topics)
 
-    fig = topic_model.visualize_hierarchy(custom_labels=True)
-    fig.show()
-    fig.write_html("data/hierarchy.html")
+    #topic_model.visualize_hierarchy(hierarchical_topics=hierarchical_topics, custom_labels=True)
+    #
+    #fig = topic_model.visualize_hierarchy(custom_labels=True)
+    #fig.show()
+    #fig.write_html("data/hierarchy.html")
+    #hierarchical_topics.to_csv("data/hierarchy_df.csv")
 
-    hierarchical_topics.to_csv("data/hierarchy_df.csv")
+
 
     tree = topic_model.get_topic_tree(hierarchical_topics)
     print(tree)
@@ -123,19 +152,154 @@ def try_bert(text):
     for t in hierarchical_topics:
         print(t)
 
+    with open(f"maps/MAP_{map_name}.html", "w", encoding="utf-8") as txt_map_file:
+
+        app = Flask(__name__)
+
+        with app.app_context():
+            txt_map_file.write(render_as_html(topic_model, text, spans, tree))
+
+
+
+
     print(hierarchical_topics.head())
 
-    G = create_networkx_tree(hierarchical_topics, topic_labels)
-    visualize_networkx_tree(G)
+    #G = create_networkx_tree(hierarchical_topics)
+    #visualize_networkx_tree(G)
+
+
     #visualize_mindmap(tree)
     #tree = create_tree_structure(hierarchical_topics)
-
     #print(topic_model.topic_labels_)
 
 def load_df():
     hierarchical_topics = pd.read_csv("data/hierarchy_df.csv")
 
     visualize_topic_tree(hierarchical_topics)
+
+
+def render_as_html(topic_model, text, spans, tree):
+
+
+    print("starting summary...")
+    summz = []
+
+    for fil in FILES_CACHE:
+        summz += get_summarized_pdf(fil)
+        
+    print(summz)
+                
+
+    ctx = {}
+
+    print(tree)
+
+    ctx["tree"] = tree.replace("\t", "&emsp;")
+    tree_iter = tree.replace("    ", "&emsp;").split("\n")
+    #tree_iter = tree.replace("\t", "&emsp;").split("\n")
+
+    print(tree_iter)
+
+
+    df = topic_model.get_document_info(text)
+
+    #for doc_info in df.iterrows():
+
+
+    paragraphs = []
+
+    topic_paras = []
+
+    for topic_index in range(len(topic_model.topics_)):
+
+        cur_topic_docs = []
+
+        for i in range(len(df)):
+            #if i < 1:
+            #    continue
+
+            #if df["Representative_document"][i]:
+
+            if df["Topic"][i] != topic_index:
+                continue
+
+            doc_file = spans[i]
+
+            title = f"{doc_file}, document id {i}"
+            topic_title = f"TOPIC {topic_index}: \t{df["CustomName"][i]}"
+            val = df["Document"][i].split("\n")
+            #txt_map_file.write(f"<div><h1>{title}</h1>\n\t<p>{val}</p>\n</div>\n")
+
+            paragraphs.append((title,topic_title,val))
+
+            cur_topic_docs.append((title, i, val))
+
+        if len(cur_topic_docs) > 0:
+            topic_paras.append([topic_title, topic_index, cur_topic_docs])
+
+
+    ctx["paragraphs"] = paragraphs
+
+    source = """
+    <html>
+    <head>
+    </head>
+    <body>
+      <div>
+          <h2>TREE:</h2>
+            <p>
+            {% autoescape false %}
+                {% for t in tree_iter %}
+                    {{ t }}<br>
+                {% endfor %}
+            {% endautoescape %}
+            </p>
+      </div>
+
+      <div>
+        <h2>INDEX:</h2>
+
+        {% for topic_title, topic_index, paragraphs in topic_paras %}
+        <a href="#t_{{  topic_index  }}">{{  topic_title  }}</a><br>
+            {% for title, par_index, val in paragraphs %}
+                &emsp;<a href="#d_{{  par_index  }}">{{  title  }}</a><br>
+            {% endfor %}
+        {% endfor %}
+      </div>
+
+      <div>
+        <h2>Summaries:</h2>
+        {% for s in summaries %}
+        <h3>---divisor---</h3>
+        <p>{{  s  }}</p><br><br>
+        {% endfor %}
+      </div>
+
+      <div>
+      {% for topic_title, topic_index, paragraphs in topic_paras %}
+        <div>
+        <h2 id="t_{{  topic_index  }}">{{ topic_title }}</h2>
+            {% for title, par_index, val in paragraphs %}
+                <div>
+                    <h3 id="d_{{  par_index  }}">{{ title }}</h3>
+                    <p style="margin:10px">
+                        {% for i in val %}
+                            {{ i }}<br>
+                        {% endfor %}
+                    </p>
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+    </div>
+    </body>
+    </html>
+    """
+
+
+    output = flask.render_template_string(source, summaries=summz, tree_iter=tree_iter,topic_paras=topic_paras, tree=tree)
+
+    return output
 
 
 import pandas as pd
@@ -205,7 +369,7 @@ def visualize_networkx_tree(G, figsize=(12, 8), title="Topic Hierarchy"):
         pos, 
         with_labels=True, 
         node_color="lightblue", 
-        node_size=2000, 
+        node_size=2000,
         font_size=10, 
         font_weight="bold", 
         arrows=True
@@ -213,18 +377,7 @@ def visualize_networkx_tree(G, figsize=(12, 8), title="Topic Hierarchy"):
     plt.title(title)
     plt.show()
 
-# Example Usage
-# hierarchical_topics = pd.read_csv('hierarchical_topics.csv')  # Load your hierarchical topics data
-# custom_labels = {
-#     20: "Root Topic",
-#     24: "Neurophysiology",
-#     41: "Retinal Studies",
-#     40: "Visual Neuroscience"
-# }
-# G = create_networkx_tree(hierarchical_topics, custom_labels=custom_labels)
-# visualize_networkx_tree(G)
 
-# Step 3: Visualize the tree as a graph
 def visualize_topic_tree(hierarchical_topics, title="Topic Hierarchy"):
     """
     Visualizes the topic tree as a directed graph.
@@ -287,16 +440,6 @@ def create_txt(filepath):
     return text
 
 
-# Sample text data (replace with your extracted text)
-documents = [
-    "Artificial Intelligence is transforming technology and industries.",
-    "Machine learning is a subset of Artificial Intelligence focusing on data.",
-    "Deep learning, part of machine learning, uses neural networks for analysis.",
-    "Natural Language Processing enables understanding of human language.",
-    "Robotics combines AI and physical machines for automated tasks.",
-    "Cybersecurity ensures systems and networks are protected."
-]
-
 
 def create_tree_structure(h_topics):
     """
@@ -342,35 +485,46 @@ def visualize_mindmap(tree, title="Topic Mindmap"):
 
 #visualize_mindmap(topic_tree)
 
+FILES_CACHE = []
+
 def process_file(file_path):
-    txt = text_iter_from_pdf(file_path, split_lines=True)
-    try_bert(txt)
+
+    global FILES_CACHE
+
+    FILES_CACHE = [file_path] if isinstance(file_path, str) else file_path
+
+    txt, spans = text_iter_from_pdf(file_path, split_lines=False)
+    
+    
+    try_bert(txt, spans)
 
 
 
 if __name__ == "__main__":
 
     import sys  
-  
-    # Using sys.getdefaultencoding() method  
     encoding = sys.getdefaultencoding()  
-    
-    # Print the current string encoding used  
     print("DEFAULT ENCODING:",encoding)  
-
     
 
-    #load_df()
-    #quit(0)
-
-    filepath = ["bertopic/MAT-notes-part1.pdf", "bertopic/MAT-notes-part2.pdf"]
 #    create_txt(filepath)
     filepath = "bertopic/lecture1-introduction.pdf"
     filepath = "uploads/callaway.pdf"
     filepath = "uploads/MAT-notes-part1.pdf"
+    filepath = ["uploads/MAT-notes-part1.pdf", "uploads/MAT-notes-part2.pdf"]
 
-    txt = text_iter_from_pdf(filepath, split_lines=True)
-    try_bert(txt)
+    filepath = [
+        "uploads/ltwa/2024-09-18.pdf",
+        "uploads/ltwa/2024-09-25.pdf",
+        "uploads/ltwa/2024-10-02.pdf",
+        "uploads/ltwa/2024-10-09.pdf",
+        "uploads/ltwa/2024-10-16.pdf",
+        "uploads/ltwa/2024-10-23.pdf",
+    ]
+
+    process_file(filepath)
+#    txt, spans = text_iter_from_pdf(filepath, split_lines=False)
+#    try_bert(txt, spans)
 
     #hierarchical_topics = pd.read_csv("data/hierarchy_df.csv", encoding="utf-8")
     #G = create_networkx_tree(hierarchical_topics)

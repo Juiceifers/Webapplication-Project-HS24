@@ -1,3 +1,4 @@
+import fitz
 import pdfplumber
 from transformers import BartTokenizer, BartForConditionalGeneration
 import re
@@ -10,6 +11,12 @@ def clean_text(text):
     text = re.sub(r'\s+', ' ', text)  # Replace multiple spaces/newlines with a single space
     text = re.sub(r'[^\x00-\x7F]+', '', text)  # Remove non-ASCII characters (if necessary)
     text = text.strip()  # Remove whitespace
+    return text
+
+def new_clean_text(text):
+    text = re.sub(r'\s+', ' ', text)  # Replace multiple spaces/newlines with a single space
+    text = re.sub(r'[^\x00-\x7F]+', '', text)  # Remove non-ASCII characters (if necessary)
+    #text = text.strip()  # Remove whitespace
     return text
 
 # Function to split text into chunks that do not exceed the model's token limit
@@ -63,6 +70,77 @@ def summarize_pdf(PATH):
 
     with open("data/summary_summarizer.txt", "w") as f:
         f.write(final_summary)
+
+def get_summarized_pdf(PATH):
+    # Open, extract and clean text from the PDF
+
+    page_texts = []
+
+    with fitz.open(PATH) as pdf:
+#    with pdfplumber.open(PATH) as pdf:
+        all_text = ""
+
+        token_count = 0
+        page_span = 0
+        cur_text = ""
+
+        for i, page in enumerate(pdf):
+            extracted_text = page.get_text()
+            cleaned_text = new_clean_text(extracted_text)
+            
+            page_span += 1
+            token_count += len(cleaned_text.split())
+
+            if token_count <= 1000:
+                cur_text += cleaned_text
+
+            else:
+                page_texts.append((page_span, cur_text))
+                token_count = 0
+                page_span = 0
+                cur_text = ""
+            #all_text += cleaned_text
+        page_texts.append((page_span, cur_text))
+
+
+    # Load the model and tokenizer
+    model = BartForConditionalGeneration.from_pretrained("sshleifer/distilbart-cnn-12-6")
+    tokenizer = BartTokenizer.from_pretrained("sshleifer/distilbart-cnn-12-6")
+
+    print("PAGES_:",page_texts)
+
+    summarized_chunks = []
+
+    for (span, all_text) in page_texts:
+        # Split the entire document into smaller chunks
+        chunks = chunk_text(all_text, tokenizer)
+
+
+        # Generate a summary for each chunk
+        for chunk in chunks:
+            inputs = tokenizer(chunk, return_tensors="pt", truncation=True, max_length=1024)
+
+            # Generate the summary
+            summary_ids = model.generate(
+                inputs["input_ids"],
+                num_beams=6, # quality --> higher (the higher the slower)
+                early_stopping=True,
+                min_length=100,
+                max_length=850,
+                top_p=0.9,  # quality --> higher
+                temperature=0.5  # quality --> lower
+            )
+
+            summarized_text = tokenizer.decode(summary_ids[0], skip_special_tokens=True, clean_up_tokenization_spaces=True)
+
+            summarized_text = re.sub(r'([a-zA-Z]+)(?=[A-Z])', r'\1 ', summarized_text)  # Insert space between concatenated words
+            #summarized_text = re.sub(r'\s+', ' ', summarized_text)  # Remove excessive spaces
+
+            summarized_chunks.append(summarized_text)
+
+    return summarized_chunks
+#    final_summary = '\n\n'.join(summarized_chunks)
+#    return final_summary
 
 def main():
     #summarize_pdf(PATH)
