@@ -64,9 +64,21 @@ def upload_file():
 
             database.add_map(map_name, user_name, filename)
 
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            root = os.path.dirname(os.path.abspath(__file__))
+            map_path = os.path.join(root, "user_data", user_name, map_name)
+            #if not os.path.exists(map_path):
 
-            fpath = f"uploads/{filename}"
+            print("map-path:", map_path)
+
+            os.makedirs(map_path, exist_ok=True)
+
+            print(os.path.join(map_path, filename))
+
+            file.save(os.path.join(map_path, filename))
+
+            fpath = f"{map_path}/{filename}"
+
+            print("FILE PATH:", fpath)
 
             process_file(fpath)
             summarizer.summarize_pdf(fpath)
@@ -81,11 +93,10 @@ def upload_file():
       <input type=submit value=Upload>
     </form>
     '''
-# Additional routes for update and delete can be added similarly
 
 
 # Initialize the SQLite database
-database.create_table()  # Ensure the table is created
+database.create_table() 
 
 
 @app.route('/', methods=['GET'])
@@ -108,6 +119,12 @@ def register():
 
     # Add user to the database
     database.add_user(username, password)
+
+    user_path = f"/user_data/{username}" 
+    if not os.path.exists(user_path):
+        os.makedirs(user_path)
+
+
     return jsonify({"success": True, "message": "User registered successfully"})
 
 @app.route('/login', methods=['POST'])
@@ -125,8 +142,10 @@ def login():
         return jsonify({"success": False, "message": "Invalid username or password"})
 
 
+
 if __name__ == '__main__':
     print("starting flask API")
-    #app.run(host='0.0.0.0', port=52091)
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=52091)
+
+    #app.run(host='0.0.0.0', port=5000)
     #http://172.23.66.241:52091

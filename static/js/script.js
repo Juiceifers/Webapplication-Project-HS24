@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         console.log("MapName : " + mapName);
 
-        fetch('http://127.0.0.1:5000/upload', {method: "POST", body: formData});
+        fetch('http://127.0.0.1:52091/upload', {method: "POST", body: formData});
         const session = {
             name: mapName,
             files: fileNames,
@@ -245,7 +245,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const username = document.getElementById('loginUsername').value;
             const password = document.getElementById('loginPassword').value;
 
-            fetch('http://127.0.0.1:5000/login', {
+            fetch('http://127.0.0.1:52091/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password })
