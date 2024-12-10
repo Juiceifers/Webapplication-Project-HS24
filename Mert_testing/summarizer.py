@@ -91,14 +91,15 @@ def get_summarized_pdf(PATH):
             page_span += 1
             token_count += len(cleaned_text.split())
 
-            if token_count <= 1000:
-                cur_text += cleaned_text
-
-            else:
-                page_texts.append((page_span, cur_text))
-                token_count = 0
-                page_span = 0
-                cur_text = ""
+            cur_text += cleaned_text + " "
+            #if token_count <= 1000:
+            #    cur_text += cleaned_text
+#
+            #else:
+            #    page_texts.append((page_span, cur_text))
+            #    token_count = 0
+            #    page_span = 0
+            #    cur_text = ""
             #all_text += cleaned_text
         page_texts.append((page_span, cur_text))
 
@@ -128,7 +129,7 @@ def get_summarized_pdf(PATH):
                 min_length=100,
                 max_length=850,
                 top_p=0.9,  # quality --> higher
-                temperature=0.5  # quality --> lower
+                temperature=0.3  # quality --> lower
             )
 
             summarized_text = tokenizer.decode(summary_ids[0], skip_special_tokens=True, clean_up_tokenization_spaces=True)
@@ -137,6 +138,47 @@ def get_summarized_pdf(PATH):
             #summarized_text = re.sub(r'\s+', ' ', summarized_text)  # Remove excessive spaces
 
             summarized_chunks.append(summarized_text)
+
+    return summarized_chunks
+#    final_summary = '\n\n'.join(summarized_chunks)
+#    return final_summary
+def get_summarized_text(TEXT):
+    # Open, extract and clean text from the PDF
+
+
+    all_text = TEXT
+
+    # Load the model and tokenizer
+    model = BartForConditionalGeneration.from_pretrained("sshleifer/distilbart-cnn-12-6")
+    tokenizer = BartTokenizer.from_pretrained("sshleifer/distilbart-cnn-12-6")
+
+    summarized_chunks = []
+
+    # Split the entire document into smaller chunks
+    chunks = chunk_text(all_text, tokenizer)
+
+
+    # Generate a summary for each chunk
+    for chunk in chunks:
+        inputs = tokenizer(chunk, return_tensors="pt", truncation=True, max_length=1024)
+
+        # Generate the summary
+        summary_ids = model.generate(
+            inputs["input_ids"],
+            num_beams=6, # quality --> higher (the higher the slower)
+            early_stopping=True,
+            min_length=100,
+            max_length=850,
+            top_p=0.9,  # quality --> higher
+            temperature=0.3  # quality --> lower
+        )
+
+        summarized_text = tokenizer.decode(summary_ids[0], skip_special_tokens=True, clean_up_tokenization_spaces=True)
+
+        summarized_text = re.sub(r'([a-zA-Z]+)(?=[A-Z])', r'\1 ', summarized_text)  # Insert space between concatenated words
+        #summarized_text = re.sub(r'\s+', ' ', summarized_text)  # Remove excessive spaces
+
+        summarized_chunks.append(summarized_text)
 
     return summarized_chunks
 #    final_summary = '\n\n'.join(summarized_chunks)

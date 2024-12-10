@@ -21,7 +21,7 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(SCRIPT_DIR))
 
 
-from Mert_testing.summarizer import get_summarized_pdf
+from Mert_testing.summarizer import get_summarized_pdf, get_summarized_text
 
 spacy
 
@@ -39,7 +39,7 @@ def text_iter_from_pdf(pdf_path, split_lines=False):
         doc = fitz.open(pdf_path)
         for i, page in enumerate(doc):
 
-            doc_path = pdf_path.split("/")[-1] + f"//Page_{i}"
+            doc_path = pdf_path.split("/")[-1] + f" /page_{i}"
 
             #for html_text in page.get_text("html"):
                 #block_text = re.findall(r"<div.*<\/div>", page.get_text("html"))
@@ -154,11 +154,13 @@ def try_bert(text, spans, map_name="DEFAULT_MAP"):
 
     with open(f"maps/MAP_{map_name}.html", "w", encoding="utf-8") as txt_map_file:
 
-        app = Flask(__name__)
+        if __name__ == "__main__":
+            app = Flask(__name__)
 
-        with app.app_context():
+            with app.app_context():
+                txt_map_file.write(render_as_html(topic_model, text, spans, tree))
+        else:
             txt_map_file.write(render_as_html(topic_model, text, spans, tree))
-
 
 
 
@@ -185,7 +187,7 @@ def render_as_html(topic_model, text, spans, tree):
     summz = []
 
     for fil in FILES_CACHE:
-        summz += get_summarized_pdf(fil)
+        summz.append((fil.split("/")[-1], get_summarized_pdf(fil)))
         
     print(summz)
                 
@@ -225,7 +227,7 @@ def render_as_html(topic_model, text, spans, tree):
 
             doc_file = spans[i]
 
-            title = f"{doc_file}, document id {i}"
+            title = f"{doc_file}, doc-id {i}"
             topic_title = f"TOPIC {topic_index}: \t{df["CustomName"][i]}"
             val = df["Document"][i].split("\n")
             #txt_map_file.write(f"<div><h1>{title}</h1>\n\t<p>{val}</p>\n</div>\n")
@@ -237,6 +239,13 @@ def render_as_html(topic_model, text, spans, tree):
         if len(cur_topic_docs) > 0:
             topic_paras.append([topic_title, topic_index, cur_topic_docs])
 
+    topic_texts = [[t[0], t[1], " ".join(list(  map( lambda x: " ".join(x[2]),  t[2] )))] for t in topic_paras]
+    topic_summaries = [get_summarized_text(text[2]) for text in topic_texts]
+
+    for t in range(len(topic_texts)):
+        topic_texts[t] = topic_texts[t] + topic_summaries[t]
+
+    topic_texts = [[t[0], t[1], " ".join(list(  map( lambda x: " ".join(x[2]),  t[2] )))] for t in topic_paras for s in topic_texts]
 
     ctx["paragraphs"] = paragraphs
 
@@ -246,7 +255,7 @@ def render_as_html(topic_model, text, spans, tree):
     </head>
     <body>
       <div>
-          <h2>TREE:</h2>
+          <h2>Tree:</h2>
             <p>
             {% autoescape false %}
                 {% for t in tree_iter %}
@@ -257,21 +266,33 @@ def render_as_html(topic_model, text, spans, tree):
       </div>
 
       <div>
-        <h2>INDEX:</h2>
+        <h2>Index:</h2>
 
+        <h3>Summaries</h3>
+        {% for ftitle, summ in summaries %}
+            <a href="#sum_{{  ftitle  }}">{{  ftitle  }} summary</a><br>
+        {% endfor %}
+
+        <br>
+
+        <h3>Topics and Docs</h3>
         {% for topic_title, topic_index, paragraphs in topic_paras %}
         <a href="#t_{{  topic_index  }}">{{  topic_title  }}</a><br>
             {% for title, par_index, val in paragraphs %}
                 &emsp;<a href="#d_{{  par_index  }}">{{  title  }}</a><br>
             {% endfor %}
         {% endfor %}
+
       </div>
 
       <div>
         <h2>Summaries:</h2>
-        {% for s in summaries %}
-        <h3>---divisor---</h3>
-        <p>{{  s  }}</p><br><br>
+        {% for ftitle, summ in summaries %}
+            <h3 id="sum_{{  ftitle  }}">{{  ftitle  }}</h3><br>
+            {% for s in summ %}
+                <p>{{  s  }}</p>
+            {% endfor %}
+            <br>
         {% endfor %}
       </div>
 
@@ -511,8 +532,33 @@ if __name__ == "__main__":
     filepath = "bertopic/lecture1-introduction.pdf"
     filepath = "uploads/callaway.pdf"
     filepath = "uploads/MAT-notes-part1.pdf"
+
+    filepath = [
+        "uploads/pcl2/1_Introduction.pdf",
+        "uploads/pcl2/2_Test_Driven_Development.pdf",
+        "uploads/pcl2/03_Object_Oriented_Programming.pdf",
+        "uploads/pcl2/04_Structuring_Python_Projects_slides.pdf",
+        "uploads/pcl2/05_Functional_Programming.pdf",
+        "uploads/pcl2/06_Computational_Complexity_slides.pdf",
+        "uploads/pcl2/07_Namespaces_References.pdf",
+        "uploads/pcl2/08_Text_Encoding_slides.pdf",
+        "uploads/pcl2/09_Numerical_Data_Processing.pdf",
+        "uploads/pcl2/10_Data_Scaling.pdf",
+        "uploads/pcl2/11_Code_Optimization.pdf",
+        "uploads/pcl2/12_Multimodal_Data_Processing_slides.pdf",
+        "uploads/pcl2/Tutorial_01.pdf",
+        "uploads/pcl2/Tutorial_03.pdf",
+        "uploads/pcl2/Tutorial_04.pdf",
+        "uploads/pcl2/Tutorial_05.pdf",
+        "uploads/pcl2/Tutorial_06.pdf",
+        "uploads/pcl2/Tutorial_07.pdf",
+        "uploads/pcl2/Tutorial_08.pdf",
+        "uploads/pcl2/Tutorial_09.pdf",
+    ]
+
     filepath = ["uploads/MAT-notes-part1.pdf", "uploads/MAT-notes-part2.pdf"]
 
+    
     filepath = [
         "uploads/ltwa/2024-09-18.pdf",
         "uploads/ltwa/2024-09-25.pdf",
@@ -521,6 +567,7 @@ if __name__ == "__main__":
         "uploads/ltwa/2024-10-16.pdf",
         "uploads/ltwa/2024-10-23.pdf",
     ]
+
 
     process_file(filepath)
 #    txt, spans = text_iter_from_pdf(filepath, split_lines=False)
