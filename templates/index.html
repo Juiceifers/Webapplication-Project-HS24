@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MML</title>
+    <link rel="shortcut icon" type="image/png" href="{{  url_for('static', filename='graphics/favicon_mml_v2.png')  }}">
+    <link rel="stylesheet" href="{{  url_for('static', filename='style.css')  }}">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="left-content">
+                <div class="logo">
+                    <img src="{{  url_for('static', filename='graphics/MML_v2.png')  }}" alt="Logo">
+                </div>
+                <h1 id="title">MapMyLecture</h1>
+                <p id="slogan">Convert your lectures into simple mindmaps <br> with just a few clicks!</p>
+            </div>
+            
+            <div class="header-right">
+                <p id="authors">
+                    Created by <br>
+                    <a id="link" href="https://www.linkedin.com/in/ishana-rana/">Ishana Rana</a><br>
+                    <a id="link" href="https://www.linkedin.com/in/mert-erol1/">Mert Erol</a><br>
+                    <a id="link" href="https://github.com/peypod">Kasper Shaun Powell</a>
+                </p>
+                <div class="logo">
+                    <img src="{{ url_for('static', filename='graphics/DEV7_v2.png')  }}" alt="Logo">
+                </div>
+            </div>
+
+        </div>
+
+    </header>
+    
+    <div class="container">
+        <aside class="sidebar">
+            <!--user profile-->
+            <div class="userProfile">
+
+                <div class="profilePic">
+                    <img src="{{ url_for('static', filename='graphics/user profile icon.png')  }}" alt="Default User Profile Picture">
+                </div>
+
+                <div class="userDetails">
+                    <div class="UserName" id = "user-name">
+                        <h3>No User :(</h3>
+                    </div>
+                    <div class="loginRegister">
+                        <a href="login.html">Login</a>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+            <aside class="history">
+                <div class="previous-maps">
+                    <h2>Previous Maps</h2>
+
+                    <!-- Plus button to start new map -->
+                    <button id="plusButton" class="plus-btn">
+                        +
+                        <span class="tooltip">New Map</span>
+                    </button>
+
+                    <ul id="previousMapsList">
+                        <!-- New map names will be added here dynamically -->
+                    </ul>
+                </div>
+            </aside>
+
+            <!-- Useful Links Section -->
+            <div class="useful-links">
+                <h3>Useful Links</h3>
+                <ul>
+                    <li><a href="https://www.ilovepdf.com/pdf_to_word" target="_blank"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSUSxYF_tWvNP8AKVjRF6MH28K6I-jywoxPA&s" alt="PDF to Word Converter Logo" /> PDF to Word</a></li>
+                    <li><a href="https://www.uniboard.ch/downloads.php?do=cat&id=4196" target="_blank"><img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OisBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3NTc3Nzc3NzcuNzc3NzctNzc3Nzc3Nzc1NS8tNzc3MDctNzczNzg3NzUtNf/AABEIABwAHAMBEQACEQEDEQH/xAAYAAEAAwEAAAAAAAAAAAAAAAAFAAIEA//EACcQAAICAQMDAwUBAAAAAAAAAAECAwQABREhBjFBIkJhE1FigbES/8QAGgEAAgMBAQAAAAAAAAAAAAAAAAQCAwUGAf/EACgRAAICAAQFAwUAAAAAAAAAAAECAAMEERIxBSFBUYEiYcETFCQzof/aAAwDAQACEQMRAD8A2abQn1K2laqu7t3J7KPJPxnT22rUuppw9FD3uESLvX6don6U89m7MvDtAQiA/B84sHxNnNQFHvHzXgafS5LH25CRdJ0zVVYaJZkS0o3FazwXH4t5w+vbV+0cu4h9rh8QPx2ybsevmAOjRuySKVZTsVPcHHAQRmJlspU5HePaOzQ9NaxPAdpiUjLDuqHv/Tidw1YitTt8zTwpKYO1135DxAMdmXOtSSSG1FJCSJFcFSPvkXAKkGWUsVsBXeJ9a7Ra/L9PYF0R3AHuI5xfA86RnG+LHTiTl1AmrpKKeavq6QxtKHplBGPcx3C5XjGUNWSesu4arMloAz9P9lG6WmUKh1HT1sgAyQvLsU/fO+SGNXfScu8ieFvkBrXV1EvXr6ZoTizctxXricx1q/KBvBZsiz24gaVGkdzJpXRgzrsYMw2A28wO5bmuWpbEzbySN/psbRFRQo6TNtue1y7bmWr3bVaGSOvYkjRz6gjbb4NWjEFhnPa77K1IRsgZnPqJLck99+cnKic95MISYQn/2Q==" alt="Uniboard Logo" /> Uniboard</a></li>
+                </ul>
+            </div>
+
+
+        </aside>
+    
+        <main>
+            <h2>Create A New Map!</h2>
+            
+            <!-- Form to input the map name (this will be hidden) -->
+            <form id="mapNameForm">
+                <label for="mapName">Name of this map:</label>
+                <input type="text" id="mapName" name="mapName" placeholder="required" required autofocus>
+            </form>
+    
+            <div class="upload-box" id="uploadBox">
+                <img id="uploadIcon" src="{{  url_for('static', filename='graphics/uploadIcon.png')  }}" alt="Uploading icon">
+                <p id="subhead" style="font-size: calc(18px + 0.3vw); margin-bottom: 20px;">Upload file(s)</p>
+                <input type="file" id="uploadFile" multiple>
+                <p>Supported file formats are: .pdf, .docx, .pptx</p>
+            </div>
+            
+            <div class="actions">
+                <button class="btn" id="processBtn">do the magic!</button>
+            </div>
+    
+            <!-- Progress Bar -->
+            <div id="progress-container" style="display:none;">
+                <progress id="progressBar" value="0" max="100"></progress>
+                <p id="progressText" style="text-align: center;">Processing... 0%</p>
+            </div>
+            <!-- The results will be inserted here dynamically -->
+            <div id="results-container">
+                <h2 id="map-name-heading" style="display: none;"></h2>
+            </div>
+            
+            <div class="disclaimer">
+                <p>Be aware that this model might provide inaccurate results! Always double-check!!<br> We take no accountability lmao</p>
+            </div>
+            
+        </main>
+    </div>
+    
+    
+    
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

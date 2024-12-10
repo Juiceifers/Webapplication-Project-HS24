@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, flash, redirect, url_for
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 
-from flask import Flask
+from flask import Flask, render_template
 from werkzeug.utils import secure_filename
 import database  # Import your database functions
 import os
@@ -86,6 +86,15 @@ def upload_file():
 
 # Initialize the SQLite database
 database.create_table()  # Ensure the table is created
+
+
+@app.route('/', methods=['GET'])
+def mainpage():
+    return render_template("index.html")
+
+@app.route('/login.html', methods=['GET'])
+def loginpage():
+    return render_template("login.html")
 
 # Routes for registration and login
 @app.route('/register', methods=['POST'])

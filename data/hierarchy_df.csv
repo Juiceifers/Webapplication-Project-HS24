@@ -1,17 +1,5 @@
 ,Parent_ID,Parent_Name,Topics,Child_Left_ID,Child_Left_Name,Child_Right_ID,Child_Right_Name,Distance
-15,32,linearly_vector_dimensional_linear_matrix,"[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]",18,wtx_10_wt_50_40,31,vector_linearly_matrix_tensors_dimensional,1.4840042854434399
-14,31,vector_linearly_matrix_tensors_dimensional,"[0, 1, 2, 3, 4, 6, 7, 8, 10, 12, 13, 14, 15, 16]",30,w1x1_x1x2_w2x2_x1_d2l,19,matrix_matrices_vector_linear_vectors,1.149257618470971
-13,30,w1x1_x1x2_w2x2_x1_d2l,"[2, 3, 4, 6, 7, 8, 10, 12, 13, 14, 15, 16]",29,w3_w5_w4_α4_α3,20,w1x1_x1x2_wtx_w2x2_x1,1.0711390569906598
-12,29,w3_w5_w4_α4_α3,"[2, 3, 6, 7, 8, 12, 13, 14, 15, 16]",25,w3_w4_w5__,28,α5_α1_α4_α2_α3,1.0000002499659753
-11,28,α5_α1_α4_α2_α3,"[2, 3, 6, 7]",27,α5_α1_α2_α4_α3,7,____,1.0000001646892704
-10,27,α5_α1_α2_α4_α3,"[2, 3, 6]",6,ℝn_10x___,26,α1_α5_α4_α2_α3,1.0000000787888028
-9,26,α1_α5_α4_α2_α3,"[2, 3]",3,____,2,α1_α5_α4_α2_α3,1.0
-8,25,w3_w4_w5__,"[8, 12, 13, 14, 15, 16]",22,w4_w5_w3__,24,w3_w4_w5__,1.0
-7,24,w3_w4_w5__,"[8, 12, 13, 14, 15, 16]",23,____,13,____,1.0
-6,23,____,"[8, 12]",8,____,12,____,0.9999999999999999
-5,22,w4_w5_w3__,"[14, 15, 16]",16,w4_w3_w5__,21,____,0.9999999999999999
-4,21,____,"[14, 15]",15,____,14,____,0.9999999999999998
-3,20,w1x1_x1x2_wtx_w2x2_x1,"[4, 10]",10,x1_x2_x3_x11_x5,4,w1x1_x1x2_wtx_w2x2_x1,0.907300030148237
-2,19,matrix_matrices_vector_linear_vectors,"[0, 1]",1,matrix_linear_matrices_vector_inverse,0,linearly_perceptron_scalars_scalar_multiplied,0.7898786407311593
-1,18,wtx_10_wt_50_40,"[5, 9, 11]",11,10_40_50_30_20,17,wtx_wt_10__,0.6298928328520014
-0,17,wtx_wt_10__,"[5, 9]",5,10____,9,wtx_wt_10__,0.23045583710179907
+3,8,logarithm_classifiers_embeddings_probabilities_equivalence,"[0, 1, 2, 3, 4]",1,v1w1_a1x1_viwi_nxn_vnwn,7,logarithm_classifiers_embeddings_probabilities_equivalence,1.0480640748882903
+2,7,logarithm_classifiers_embeddings_probabilities_equivalence,"[0, 2, 3, 4]",6,logarithm_probabilities_classifiers_embeddings_regression,3,asymmetric_equivalence_intransitive_transitive_implies,0.9338080553969779
+1,6,logarithm_probabilities_classifiers_embeddings_regression,"[0, 2, 4]",2,embeddings_unigrams_sigmoid_word2vec_sklearn,5,logarithm_classifiers_probabilities_regression_entropy,0.771849418154581
+0,5,logarithm_classifiers_probabilities_regression_entropy,"[0, 4]",0,logarithm_probabilities_classifiers_regression_entropy,4,permutation_sigmoid_perceptron_embedding_cartesian,0.691923940970439
