@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const loginForm = document.getElementById('loginForm');
     const loginSection = document.getElementById('login-section');
     const registerSection = document.getElementById('register-section');
+    const container = document.getElementById("container")
     //const closeButton = document.getElementById('close-button');
 
     const url_path = window.location.href;
@@ -74,6 +75,7 @@ document.addEventListener('DOMContentLoaded', function() {
         signupToggle.addEventListener('click', function() {
             loginSection.style.display = 'none';
             registerSection.style.display = 'block';
+            container.style.backgroundColor='rgba(180, 140, 10, 0.6)';
         });
     }
 
@@ -81,6 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
         loginToggle.addEventListener('click', function() {
             registerSection.style.display = 'none';
             loginSection.style.display = 'block';
+            container.style.backgroundColor='rgba(51, 133, 155, 0.60)';
         });
     }
 
@@ -89,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (closeButton) {
         closeButton.addEventListener('click', function() {
             window.location.uref = '/';
-            window.close(); // Or any other functionality you want to implement
+            window.close(); // Or window.history.back(); 
         });
     }
 });

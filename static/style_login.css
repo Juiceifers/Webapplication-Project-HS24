@@ -10,11 +10,13 @@ body, html {
     padding: 0;
 }
 
-h1 {
+h1, h2 {
     text-align: center;
     color: #fff;
-    font-size: 1.5rem;
-    font-family: 'Tahoma', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    font-family: 'Courier', monospace;
+    text-align: center
 }
 
 .header h1, .header p {
@@ -50,10 +52,10 @@ h1 {
 }
 
 .mainContent {
-    display: flex; /* Use Flexbox for horizontal layout */
-    flex-direction: row; /* Ensure items are in a row */
-    align-items: center; /* Align items vertically in the center */
-    justify-content: center; 
+    display: flex; 
+    flex-direction: row; 
+    align-items: center; 
+    justify-content: center;
     gap: 10px; 
 }
 
@@ -75,7 +77,7 @@ body {
     background-color: #911c5e;
     color: #fed1eb;
     border: 2px solid #fc8ccc;
-    font-size: 14px;
+    font-size: calc(14px + 0.15vw);
     text-align: center;
     cursor: pointer;
     border-radius: 20px;
@@ -91,106 +93,52 @@ body {
 }
 
 #container {
-    max-width: auto;
-    height: auto; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 1% auto; /* Center it horizontally in the page */
-    margin-top: 0; /* Removes space above the container */
-    margin-bottom: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-    position: relative; /* To ensure it doesn't change position */
-}
-
-#container section h1,
-#container section p {
-    margin-top: 0; /* Removes default margins for headings or paragraphs */
-}
-
-div#container section {
-    display: flex;
-    justify-content: space-between;
-    margin: 2% auto;
-    width: 70%;
-    max-width: 1200px;
-    background-color: rgba(51, 133, 155, 0.75);
+    width: fit-content;
+    background-color: rgba(51, 133, 155, 0.60);
     backdrop-filter: blur(3.5px);
     -webkit-backdrop-filter: blur(3.5px);
-    border: 1px solid rgba(51, 133, 155, 0.38);
+    border: 3px solid rgba(255, 255, 255, 0.38);
     border-radius: 30px;
     overflow: hidden;
     text-align: center;
     box-shadow: 8px 10px 25px 0px #161616;
-    min-height: 350px; /* Set a minimum height */
     transition: height 0.8s ease-in-out; /* Smooth transition for height adjustments */
-    padding-top: 0;
     margin-top: 0;
     margin-bottom: 1%;
+    padding: 2% 5%;
+    position: relative;
+    margin: 2% auto;
 }
+
 
 div#container section article, 
 div#container section aside {
-    width: 50%; /* Maintain proportions */
+    width: 100%; 
 }
 
-div#container section article {
-    width: 45%;
-    background-color: rgba(180, 140, 10, 1);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 2%;
-}
 
-div#container section article h1 {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #ffffff;
-    font-family: 'Courier', monospace;
-}
-
-div#container section article p {
+div#container section article p, div#container .inner p {
     font-size: 20px;
-    margin-top: 10px;
+    padding: 5px;
     color: #fff;
 }
 
-div#container section article a.btn {
+#signup-toggle, #login-toggle {
     display: inline-block;
-    padding: 10px 30px;
-    border: #fc8ccc solid 2px;
+    padding: 2px 30px;
+    border: #fed1eb solid 2px;
     border-radius: 25px;
-    font-size: 18px;
+    font-size: calc(14px + 0.3vw);
     text-decoration: none;
-    margin-top: 30px;
-    font-weight: 600;
     color: #fed1eb;
-    background-color: #911c5e ;
+    background-color: transparent ;
     transition: 0.2s all ease;
 }
 
-div#container section article a.btn:hover {
+#signup-toggle:hover, #login-toggle:hover {
     background-color: #a33f78;
 }
 
-div#container section aside {
-    width: 55%;
-    padding: 2%;
-}
-
-div#container section aside h2 {
-    font-size: 1.8rem;
-    color: #fff;
-    font-weight: 700;
-    font-family: 'Courier', monospace;
-}
-
-div#container section aside p {
-    font-size: 20px;
-    color: #fff;
-}
 
 form {
     width: 90%;
