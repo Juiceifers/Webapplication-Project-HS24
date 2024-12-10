@@ -11,7 +11,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const username = document.getElementById('loginUsername').value;
             const password = document.getElementById('loginPassword').value;
 
-            fetch('http://127.0.0.1:5000/login', {
+            //fetch('http://http://127.0.0.0:5000/login', {
+            fetch('http://http://172.23.66.241:5000/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

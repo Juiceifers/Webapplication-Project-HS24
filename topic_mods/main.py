@@ -106,11 +106,11 @@ def try_bert(text, spans, map_name="DEFAULT_MAP"):
                                                  separator=", ")
     topic_model.set_topic_labels(topic_labels)
 
-    print(topic_model.get_topic_info())
-    print(topic_model.custom_labels_)
+    #print(topic_model.get_topic_info())
+    #print(topic_model.custom_labels_)
 
-    terms = topic_model.visualize_barchart()
-    terms.show()
+    #terms = topic_model.visualize_barchart()
+    #terms.show()
     #.write_html("bertopic/hierarchy.html")
 
     print("Topics::")
@@ -134,7 +134,7 @@ def try_bert(text, spans, map_name="DEFAULT_MAP"):
 
 
     tree = topic_model.get_topic_tree(hierarchical_topics)
-    print(tree)
+    #print(tree)
 
     topic_distr, _ = topic_model.approximate_distribution(text, calculate_tokens=True)
 
@@ -148,9 +148,9 @@ def try_bert(text, spans, map_name="DEFAULT_MAP"):
     document_info = topic_model.get_document_info(text)
     print(document_info)
 
-    print("Hierarchy:")
-    for t in hierarchical_topics:
-        print(t)
+    #print("Hierarchy:")
+    #for t in hierarchical_topics:
+    #    print(t)
 
     with open(f"maps/MAP_{map_name}.html", "w", encoding="utf-8") as txt_map_file:
 
