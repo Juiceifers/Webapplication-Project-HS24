@@ -93,8 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         console.log("MapName : " + mapName);
 
-        //fetch('http://127.0.0.1:5000/upload', {method: "POST", body: formData});
-        fetch(' http://172.23.66.241:52091/upload', {method: "POST", body: formData});
+        fetch('http://127.0.0.1:5000/upload', {method: "POST", body: formData});
         const session = {
             name: mapName,
             files: fileNames,
