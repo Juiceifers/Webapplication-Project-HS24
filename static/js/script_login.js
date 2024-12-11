@@ -25,7 +25,11 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    const userSession = { username: data.username };
+                    const userSession = { 
+                        username: data.username,
+                        maps: data.maps || []
+                    };
+
                     localStorage.setItem('loggedInUser', JSON.stringify(userSession));
                     //window.location.href = '/index.html';  // Redirect to index.html
                     window.location.href = '/';  // Redirect to index.html

@@ -124,5 +124,46 @@
     
     
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', function () {
+            // Retrieve the logged-in user data from localStorage
+            const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+    
+            // Reference to the "Previous Maps" list
+            const mapsContainer = document.getElementById("previousMapsList");
+    
+            // Reference to the user name display
+            const userNameElement = document.getElementById("user-name");
+    
+            // Check if user data exists in localStorage
+            if (loggedInUser && loggedInUser.username) {
+                // Set user name
+                userNameElement.innerHTML = `<h3>${loggedInUser.username}</h3>`;
+            } else {
+                userNameElement.innerHTML = `<h3>No User :(</h3>`;
+            }
+    
+            // Check if maps exist in the logged-in user object
+            if (loggedInUser && loggedInUser.maps && loggedInUser.maps.length > 0) {
+                // Iterate through the maps and add them to the list
+                loggedInUser.maps.forEach(map => {
+                    const listItem = document.createElement("li");
+                    listItem.textContent = map.map_name; // Add map name
+    
+                    // Optionally, add more details (like filename) for each map
+                    listItem.innerHTML = `${map.map_name} - <small>${map.filename}</small>`;
+                    mapsContainer.appendChild(listItem);
+                });
+            } else {
+                // If no maps exist, show a message
+                const noMapsMessage = document.createElement("li");
+                noMapsMessage.textContent = "No maps found.";
+                mapsContainer.appendChild(noMapsMessage);
+            }
+        });
+    </script>
+    
+
 </body>
 </html>
