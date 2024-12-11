@@ -89,10 +89,39 @@ def upload_file():
                 filepaths.append(fpath)
 
 
-        database.add_map(map_name, user_name, filename)
-        process_file(fpath)
-                #summarizer.summarize_pdf(fpath)
+        database.add_map(map_name, user_name, filepaths)
+        render_text = process_file(filepaths)
 
+        map_file_path = os.path.join(map_path, f"MAP_{map_name}.html")
+        
+        with open(map_file_path, "w", encoding="utf-8") as txt_map_file:
+            txt_map_file.write(render_text)
+
+
+        user = database.get_user(user_name)
+        if user:
+            maps = database.get_user_maps(user[0])
+        else:
+            maps = []
+
+
+        return jsonify({
+                        "success": True,
+                        "message": "Files uploaded and processed successfully",
+                        "map_name": map_name,
+                        "filenames": filepaths,
+                        "maps": [
+                            {
+                                "id": map_item[0],
+                                "user_id": map_item[1],
+                                "map_name": map_item[2],
+                                "files": map_item[3]
+                            } for map_item in maps
+                        ] if maps else []
+                    }), 200
+
+
+        return render_text
                 #return redirect(url_for('download_file', name=filename))
     return '''
     <!doctype html>
@@ -123,6 +152,8 @@ def register():
     username = request.json.get('username')
     password = request.json.get('password')
 
+
+
     # Check if the user already exists in the database
     if database.get_user(username):
         return jsonify({"success": False, "message": "User already exists"})
@@ -147,9 +178,32 @@ def login():
     # Fetch user from the database
     user = database.get_user(username)
     if user and user[2] == password:  # Compare stored password (user[2]) with the entered password
-        return jsonify({"success": True, "username": username})
+
+        # Retrieve user's maps
+        maps = database.get_user_maps(user[0])
+        
+        # Convert maps to a list of dictionaries for JSON serialization
+        maps_list = []
+        if maps:
+            maps_list = [
+                {
+                    "id": map_item[0],
+                    "user_id": map_item[1],
+                    "map_name": map_item[2],
+                    "files": map_item[3]
+                } for map_item in maps
+            ]
+        
+        # Successful login
+        return jsonify({
+            "success": True,
+            "username": username,
+            "maps": maps_list
+        })
     else:
+        # Invalid login
         return jsonify({"success": False, "message": "Invalid username or password"})
+
 
 
 

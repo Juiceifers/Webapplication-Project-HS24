@@ -157,15 +157,24 @@ def try_bert(text, spans, map_name="DEFAULT_MAP"):
     #for t in hierarchical_topics:
     #    print(t)
 
-    with open(f"maps/MAP_{map_name}.html", "w", encoding="utf-8") as txt_map_file:
+    render_text = render_as_html(topic_model, text, spans, tree)
 
-        if __name__ == "__main__":
-            app = Flask(__name__)
+    return render_text
 
-            with app.app_context():
-                txt_map_file.write(render_as_html(topic_model, text, spans, tree))
-        else:
-            txt_map_file.write(render_as_html(topic_model, text, spans, tree))
+    
+    #with open(f"maps/MAP_{map_name}.html", "w", encoding="utf-8") as txt_map_file:
+#
+    #    if __name__ == "__main__":
+    #        app = Flask(__name__)
+#
+    #        render_text = render_as_html(topic_model, text, spans, tree)
+#
+    #        with app.app_context():
+    #            txt_map_file.write(render_text)
+    #    else:
+    #        txt_map_file.write(render_text)
+#
+    #return render_text
 
 
 
@@ -524,7 +533,7 @@ def process_file(file_path):
     txt, spans = text_iter_from_pdf(file_path, split_lines=False)
     
     
-    try_bert(txt, spans)
+    return try_bert(txt, spans)
 
 
 
