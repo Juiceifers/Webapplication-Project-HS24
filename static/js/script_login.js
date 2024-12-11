@@ -91,12 +91,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Close button functionality
     const closeButton = document.getElementById('close-button');
     if (closeButton) {
-        closeButton.addEventListener('click', function() {
-            window.location.uref = '/';
-            window.close(); // Or window.history.back(); 
+        closeButton.addEventListener('click', function () {
+            window.history.back(); // Go back without altering localStorage
         });
     }
 });
