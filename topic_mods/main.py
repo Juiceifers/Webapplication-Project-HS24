@@ -22,6 +22,7 @@ sys.path.append(os.path.dirname(SCRIPT_DIR))
 
 
 from Mert_testing.summarizer import get_summarized_pdf, get_summarized_text
+from Mert_testing.new_summarizer import summarize_pdf, new_summarize_text
 
 spacy
 
@@ -85,14 +86,14 @@ def try_bert(text, spans, map_name="DEFAULT_MAP"):
     #                                         'attribute_ruler', 'lemmatizer'])
     embedding_model = pipeline("feature-extraction", model="distilbert-base-cased")
 
-    umap_model = UMAP(n_neighbors=10, n_components=5, min_dist=0.0, metric='cosine', random_state=42)
+    umap_model = UMAP(n_neighbors=15, n_components=5, min_dist=0.0, metric='cosine', random_state=42)
     vectorizer_model = CountVectorizer(stop_words="english")
 
     representation_model = KeyBERTInspired()
     #topic_model = BERTopic()
-    topic_model = BERTopic(n_gram_range=(1, 2), min_topic_size=8, embedding_model=embedding_model,umap_model=umap_model,calculate_probabilities=False, vectorizer_model=vectorizer_model, representation_model=representation_model)
+    topic_model = BERTopic(n_gram_range=(1, 2), min_topic_size=4, embedding_model=embedding_model,umap_model=umap_model,calculate_probabilities=False, vectorizer_model=vectorizer_model, representation_model=representation_model)
 
-
+    print("text doc count:", len(text))
     print("running BERTopic on pdf text...")
     topics, probs = topic_model.fit_transform(text)
     print("Fitting complete!")
@@ -113,6 +114,8 @@ def try_bert(text, spans, map_name="DEFAULT_MAP"):
     #terms.show()
     #.write_html("bertopic/hierarchy.html")
 
+    print(text)
+
     print("Topics::")
     for k,v in topic_model.get_topics().items():
         print(f"Topic Index {k}, label:{topic_model.custom_labels_[k]}")
@@ -121,6 +124,8 @@ def try_bert(text, spans, map_name="DEFAULT_MAP"):
             pout += f"{i[0]}; "
         
         print(pout)
+
+    print(f"TOPICS:{len(topic_model.get_topics())}; TEXTS:{len(text)}")
 
     hierarchical_topics = topic_model.hierarchical_topics(text)
 
@@ -187,21 +192,19 @@ def render_as_html(topic_model, text, spans, tree):
     summz = []
 
     for fil in FILES_CACHE:
-        summz.append((fil.split("/")[-1], get_summarized_pdf(fil)))
+        summz.append((fil.split("/")[-1], summarize_pdf(fil)))
         
-    print(summz)
+    #print(summz)
                 
 
+
     ctx = {}
-
     print(tree)
-
     ctx["tree"] = tree.replace("\t", "&emsp;")
     tree_iter = tree.replace("    ", "&emsp;").split("\n")
     #tree_iter = tree.replace("\t", "&emsp;").split("\n")
 
     print(tree_iter)
-
 
     df = topic_model.get_document_info(text)
 
@@ -239,13 +242,18 @@ def render_as_html(topic_model, text, spans, tree):
         if len(cur_topic_docs) > 0:
             topic_paras.append([topic_title, topic_index, cur_topic_docs])
 
+
+    
+
     topic_texts = [[t[0], t[1], " ".join(list(  map( lambda x: " ".join(x[2]),  t[2] )))] for t in topic_paras]
-    topic_summaries = [get_summarized_text(text[2]) for text in topic_texts]
+    topic_texts = [new_summarize_text(text[2]) for text in topic_texts]
 
-    for t in range(len(topic_texts)):
-        topic_texts[t] = topic_texts[t] + topic_summaries[t]
+    for t in range(len(topic_paras)):
+        topic_paras[t].append(topic_texts[t])
 
-    topic_texts = [[t[0], t[1], " ".join(list(  map( lambda x: " ".join(x[2]),  t[2] )))] for t in topic_paras for s in topic_texts]
+    
+
+    #topic_texts = [[t[0], t[1], " ".join(list(  map( lambda x: " ".join(x[2]),  t[2] )))] for t in topic_paras for s in topic_texts]
 
     ctx["paragraphs"] = paragraphs
 
@@ -276,7 +284,7 @@ def render_as_html(topic_model, text, spans, tree):
         <br>
 
         <h3>Topics and Docs</h3>
-        {% for topic_title, topic_index, paragraphs in topic_paras %}
+        {% for topic_title, topic_index, paragraphs, topic_summ in topic_paras %}
         <a href="#t_{{  topic_index  }}">{{  topic_title  }}</a><br>
             {% for title, par_index, val in paragraphs %}
                 &emsp;<a href="#d_{{  par_index  }}">{{  title  }}</a><br>
@@ -289,17 +297,16 @@ def render_as_html(topic_model, text, spans, tree):
         <h2>Summaries:</h2>
         {% for ftitle, summ in summaries %}
             <h3 id="sum_{{  ftitle  }}">{{  ftitle  }}</h3><br>
-            {% for s in summ %}
-                <p>{{  s  }}</p>
-            {% endfor %}
+                <p>{{  summ  }}</p>
             <br>
         {% endfor %}
       </div>
 
       <div>
-      {% for topic_title, topic_index, paragraphs in topic_paras %}
+      {% for topic_title, topic_index, paragraphs, topic_summ in topic_paras %}
         <div>
         <h2 id="t_{{  topic_index  }}">{{ topic_title }}</h2>
+            <p>{{  topic_summ  }}</p>
             {% for title, par_index, val in paragraphs %}
                 <div>
                     <h3 id="d_{{  par_index  }}">{{ title }}</h3>

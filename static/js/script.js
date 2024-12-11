@@ -83,7 +83,10 @@ document.addEventListener("DOMContentLoaded", function () {
         formData.append("map_name", mapName || "default_map_name");
         formData.append("user_name", user_name || "default_user_name");
 
-        formData.append("file", files[0]);
+        
+        for (let i = 0; i < files.length; i++) {
+            formData.append("files", files[i]);
+        }
 
         //alert(formData.stringify());
 
@@ -93,7 +96,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         console.log("MapName : " + mapName);
 
-        fetch('http://127.0.0.1:52091/upload', {method: "POST", body: formData});
+        fetch('http://127.0.0.1:5000/upload', {method: "POST", body: formData});
         const session = {
             name: mapName,
             files: fileNames,

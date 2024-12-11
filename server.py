@@ -36,53 +36,64 @@ def upload_file():
     print("FILE UPLOAD RECEIVED")
     if request.method == 'POST':
 
-        if 'file' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
-        file = request.files['file']
+        print("FILES:", request.files)
 
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
+        #if 'file' not in request.files:
+        #    flash('No file part')
+        #    return redirect(request.url)
         
+        user_name = request.form.get("user_name")
+        map_name = request.form.get("map_name")
 
-        if file and allowed_file(file.filename):
 
-            print("valid file")
+        root = os.path.dirname(os.path.abspath(__file__))
+        map_path = os.path.join(root, "user_data", user_name, map_name)
 
-            print(request.form, len(request.form))
-            print("Files len:", len(request.files))
-            print(f"Request content type: {request.content_type}")
+        #files = request.files['file']
+        files = request.files.getlist('files') 
+        filepaths = []
 
-            user_name = request.form.get("user_name")
-            map_name = request.form.get("map_name")
+        print(request.form, len(request.form))
+        print("Files len:", len(request.files))
+        print(f"Request content type: {request.content_type}")
 
-            print(user_name, map_name)
 
-            filename = secure_filename(file.filename)
 
-            database.add_map(map_name, user_name, filename)
+        for file in files:
 
-            root = os.path.dirname(os.path.abspath(__file__))
-            map_path = os.path.join(root, "user_data", user_name, map_name)
-            #if not os.path.exists(map_path):
+            #if file.filename == '':
+            #    flash('No selected file')
+            #    return redirect(request.url)
 
-            print("map-path:", map_path)
+            if file and allowed_file(file.filename):
 
-            os.makedirs(map_path, exist_ok=True)
+                print("valid file")
 
-            print(os.path.join(map_path, filename))
+                print(user_name, map_name)
 
-            file.save(os.path.join(map_path, filename))
+                filename = secure_filename(file.filename)
 
-            fpath = f"{map_path}/{filename}"
+                #if not os.path.exists(map_path):
 
-            print("FILE PATH:", fpath)
 
-            process_file(fpath)
-            summarizer.summarize_pdf(fpath)
+                os.makedirs(map_path, exist_ok=True)
 
-            #return redirect(url_for('download_file', name=filename))
+                print(os.path.join(map_path, filename))
+
+                file.save(os.path.join(map_path, filename))
+
+                fpath = f"{map_path}/{filename}"
+
+                print("FILE PATH:", fpath)
+                
+                filepaths.append(fpath)
+
+
+        database.add_map(map_name, user_name, filename)
+        process_file(fpath)
+                #summarizer.summarize_pdf(fpath)
+
+                #return redirect(url_for('download_file', name=filename))
     return '''
     <!doctype html>
     <title>Upload new File</title>
