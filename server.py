@@ -104,24 +104,25 @@ def upload_file():
         else:
             maps = []
 
-
-        return jsonify({
-                        "success": True,
-                        "message": "Files uploaded and processed successfully",
-                        "map_name": map_name,
-                        "filenames": filepaths,
-                        "maps": [
-                            {
-                                "id": map_item[0],
-                                "user_id": map_item[1],
-                                "map_name": map_item[2],
-                                "files": map_item[3]
-                            } for map_item in maps
-                        ] if maps else []
-                    }), 200
-
-
         return render_text
+
+        #return jsonify({
+        #                "success": True,
+        #                "message": "Files uploaded and processed successfully",
+        #                "map_name": map_name,
+        #                "render_text": render_text,
+        #                "filenames": filepaths,
+        #                "maps": [
+        #                    {
+        #                        "id": map_item[0],
+        #                        "user_id": map_item[1],
+        #                        "map_name": map_item[2],
+        #                        "files": map_item[3]
+        #                    } for map_item in maps
+        #                ] if maps else []
+        #            }), 200
+        #
+
                 #return redirect(url_for('download_file', name=filename))
     return '''
     <!doctype html>

@@ -148,11 +148,10 @@ def get_user_maps(user_id):
         print("=== Finished get_user_maps operation ===\n")
 
 # Initialize database when the module is imported
-def create_table():
-    try:
-        create_table()
-    except Exception as e:
-        print(f"Failed to initialize database: {e}")
+try:
+    create_table()
+except Exception as e:
+    print(f"Failed to initialize database: {e}")
         
 def debug_database_state():
     print("\n=== Database State Debug ===")

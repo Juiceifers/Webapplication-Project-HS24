@@ -106,6 +106,8 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .catch(error => console.error('Error:', error));
 
+
+        
         const session = {
             name: mapName,
             files: fileNames,
